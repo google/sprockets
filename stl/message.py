@@ -14,14 +14,13 @@
 
 """Defines protocol specifications and messages."""
 
-import base64
 import importlib
-import json
 import logging
 from google.protobuf import message
 from google.protobuf import reflection
 
 import stl.base  # pylint: disable=g-bad-import-order
+import stl.lib  # pylint: disable=g-bad-import-order
 
 
 class Message(stl.base.NamedObject):
@@ -43,30 +42,38 @@ class Message(stl.base.NamedObject):
   }
 
   Attributes:
-    encode: Expression to expand to a resolved message, message.MessageValue.
+    encode_name: Name for the encoding to use for this message (e.g. "json").
+    encoding: An stl.lib.Encoding object which will be used to serialize and
+      deserialize MessageValues.
     is_array: Whether this message is an array.
     fields: List of fields (stl.base.Field) defined in this protocol or message.
     messages: Map of nested messages and their name.
   """
 
-  def __init__(self, name, encode, is_array):
+  def __init__(self, name, encode_name, is_array):
     stl.base.NamedObject.__init__(self, name)
-    self.encode = encode
+    self.encode_name = encode_name
+    # Encode name might not be provided if this is a sub-message.
+    if self.encode_name:
+      module, encoding = encode_name.rsplit('.', 1)
+      self.encoding = importlib.import_module(module).__getattribute__(
+          encoding)()
     self.is_array = is_array
     self.fields = []
     self.messages = {}
 
   def __eq__(self, other):
     return (stl.base.NamedObject.__eq__(self, other) and
-            self.encode == other.encode and self.is_array == other.is_array and
-            self.fields == other.fields and self.messages == other.messages)
+            self.encode_name == other.encode_name and
+            self.is_array == other.is_array and self.fields == other.fields and
+            self.messages == other.messages)
 
   def __str__(self):
     if self.is_array:
       pattern = 'MESSAGE(%s)[] %s: f(%s) m(%s)'
     else:
       pattern = 'MESSAGE(%s) %s: f(%s) m(%s)'
-    return pattern % (self.encode, self.name, stl.base.GetCSV(self.fields),
+    return pattern % (self.encode_name, self.name, stl.base.GetCSV(self.fields),
                       stl.base.GetCSV(self.messages))
 
   def Resolve(self, env, resolved_fields):
@@ -196,11 +203,8 @@ class MessageFromExternal(Message):
     descriptor: google.protobuf.descriptor.Descriptor to generate self.external.
   """
 
-  def __init__(self, name, encode, is_array, external):
-    Message.__init__(self, name, encode, is_array)
-    if self.encode != 'protobuf':
-      raise NotImplementedError('Not supported external message for encode: ' +
-                                self.encode)
+  def __init__(self, name, encode_name, is_array, external):
+    Message.__init__(self, name, encode_name, is_array)
     # Import external message type if it is passed as a string.
     if stl.base.IsString(external):
       module, message_type = external.rsplit('.', 1)
@@ -219,7 +223,7 @@ class MessageFromExternal(Message):
     for f in desc.fields:
       if f.type == f.TYPE_MESSAGE:
         if f.name not in self.messages:
-          self.messages[f.name] = MessageFromExternal(f.name, self.encode,
+          self.messages[f.name] = MessageFromExternal(f.name, self.encode_name,
                                                       False, f.message_type)
         type_ = f.name
       else:
@@ -242,7 +246,7 @@ class MessageFromExternal(Message):
         f.type == f.TYPE_SINT64 or f.type == f.TYPE_UINT32 or
         f.type == f.TYPE_UINT64):
       return 'int'
-    # TODO(byungchul): Need to support more types.
+    # TODO(byungchul): Need to support more types
     # raise NotImplementedError('Not supported protobuf type: ' + f.name)
     return 'int'
 
@@ -253,7 +257,7 @@ class MessageFromExternal(Message):
     for name, nested_type in descriptor.nested_types_by_name.items():
       attributes[name] = MessageFromExternal._MakeClass(nested_type)
     attributes[
-        reflection.GeneratedProtocolMessageType. _DESCRIPTOR_KEY] = descriptor  # pylint: disable=protected-access
+        reflection.GeneratedProtocolMessageType._DESCRIPTOR_KEY] = descriptor  # pylint: disable=protected-access, line-too-long
     return reflection.GeneratedProtocolMessageType(
         str(descriptor.name), (message.Message,), attributes)
 
@@ -281,7 +285,8 @@ class MessageValue(stl.base.NamedObject):
   def Encode(self):
     """Encode this message instance into actual data stream.
 
-    The supported encoding methods are: json.
+    The supported encoding methods are: json, protobuf, and user-defined
+    encodings.
 
     Returns:
       A string encoded.
@@ -290,25 +295,11 @@ class MessageValue(stl.base.NamedObject):
     logging.log(1, 'Encoding ' + self.name)
     resolved = MessageValue._ResolveVars(self.value_dict_or_array)
     logging.debug('Resolved: ' + str(resolved))
-    if self.msg.encode == 'json':
-      return json.dumps(resolved)
-    if self.msg.encode == 'protobuf':
-      return self._EncodeProtobuf(resolved)
-    raise NotImplementedError('Not supported message encode: ' +
-                              self.msg.encode)
-
-  def _EncodeProtobuf(self, resolved_dict):
-    pbuf = self.msg.external()
-    MessageValue._FillProtobufDict(resolved_dict, pbuf)
-    logging.log(1, 'Filled protobuf: %s: %s', str(self), str(pbuf))
-    return pbuf.SerializeToString()
+    return self.msg.encoding.SerializeToString(resolved, self.msg)
 
   def _EncodeToString(self):
     """Coerce to string type."""
-    encoded = self.Encode()
-    if self.msg.encode == 'protobuf':
-      return stl.base.b64encode(encoded)
-    return encoded
+    return self.Encode()
 
   def Match(self, encoded):
     """Whether or not |encoded| is compatible with this message instance.
@@ -327,39 +318,12 @@ class MessageValue(stl.base.NamedObject):
       Whether or not |encoded| is compatible with this message instance.
     """
     logging.log(1, 'Decoding %s: %s', self.name, encoded)
-    if self.msg.encode == 'json':
-      return self._MatchJson(encoded)
-    if self.msg.encode == 'protobuf':
-      return self._MatchProtobuf(encoded)
-    raise NotImplementedError('Not supported message encode: ' +
-                              self.msg.encode)
-
-  def _MatchJson(self, encoded):
-    decoded_json = json.loads(encoded)
-    # TODO(byungchul): Support other types.
-    if not (isinstance(decoded_json, dict) or isinstance(decoded_json, list)):
-      return False
-    logging.info('Matching JSON:\nExpected: %s\nActual: %s\n',
-                 self.value_dict_or_array, decoded_json)
-    return MessageValue._MatchValue(self.value_dict_or_array, decoded_json)
-
-  def _MatchProtobuf(self, encoded):
-    pbuf = self.msg.external()
-    try:
-      read_len = pbuf.MergeFromString(encoded)
-    except message.DecodeError:
-      logging.exception('Could not decode protobuf.')
-      return False
-    assert read_len == len(encoded)
-    decoded_dict = {}
-    MessageValue._FillValueDict(pbuf, decoded_dict)
-    logging.info('Matching Protobuf:\nExpected: %s\nActual: %s\n',
-                 self.value_dict_or_array, decoded_dict)
-    return MessageValue._MatchValue(self.value_dict_or_array, decoded_dict)
+    decoded = self.msg.encoding.ParseFromString(encoded, self.msg)
+    logging.info('Matching message value:\nExpected: %s\nActual: %s\n',
+                 self.value_dict_or_array, decoded)
+    return MessageValue._MatchValue(self.value_dict_or_array, decoded)
 
   def _MatchFromString(self, encoded_string):
-    if self.msg.encode == 'protobuf':
-      return self.Match(base64.b64decode(encoded_string))
     return self.Match(encoded_string)
 
   @staticmethod
@@ -463,36 +427,3 @@ class MessageValue(stl.base.NamedObject):
       return expected._MatchFromString(actual)  # pylint: disable=protected-access
 
     return expected == actual
-
-  @staticmethod
-  def _FillProtobufDict(value_dict, pbuf_dict):
-    for k in value_dict:
-      if isinstance(value_dict[k], list):
-        pbuf_list = getattr(pbuf_dict, k)
-        for v in value_dict[k]:
-          if isinstance(v, dict):
-            MessageValue._FillProtobufDict(v, pbuf_list.add())
-          else:
-            pbuf_list.append(v)
-      elif isinstance(value_dict[k], dict):
-        MessageValue._FillProtobufDict(value_dict[k], getattr(pbuf_dict, k))
-      else:
-        setattr(pbuf_dict, k, value_dict[k])
-
-  @staticmethod
-  def _FillValueDict(pbuf_dict, value_dict):
-    for f_desc, v in pbuf_dict.ListFields():
-      if f_desc.label == f_desc.LABEL_REPEATED:
-        value_dict[f_desc.name] = [
-            MessageValue._GetValueFromProtobuf(f_desc, e) for e in v
-        ]
-      else:
-        value_dict[f_desc.name] = MessageValue._GetValueFromProtobuf(f_desc, v)
-
-  @staticmethod
-  def _GetValueFromProtobuf(desc, pbuf_value):
-    if desc.type != desc.TYPE_MESSAGE:
-      return pbuf_value
-    value_dict = {}
-    MessageValue._FillValueDict(pbuf_value, value_dict)
-    return value_dict

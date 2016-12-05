@@ -12,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Tests for the stl parser."""
 # pylint: disable=invalid-name
 
@@ -196,8 +195,7 @@ class StlParserTest(unittest.TestCase):
     sWithMultipleParams = stl.state.State('sWithMultipleParams')
     sWithMultipleParams.values = ['kValue1', 'kValue2']
     sWithMultipleParams.params = [
-        stl.base.Param('p1', 'int'),
-        stl.base.Param('p2', 'role'),
+        stl.base.Param('p1', 'int'), stl.base.Param('p2', 'role'),
         stl.base.Param('p3', 'string')
     ]
     self.expected_module_dict['states'] = {
@@ -213,32 +211,32 @@ class StlParserTest(unittest.TestCase):
                   '// Messages\n'
                   '//\n'
                   'message mSimpleJsonMsg {\n'
-                  '  encode "json";\n'
+                  '  encode "stl.lib.JsonEncoding";\n'
                   '  required string msg;\n'
                   '  optional int id;\n'
                   '  repeated bool bits;\n'
                   '}\n'
                   '\n'
                   'message mSimpleProtobufMsg {\n'
-                  '  encode "protobuf";\n'
+                  '  encode "stl.lib.ProtobufEncoding";\n'
                   '  external "stl.parser_test_proto_pb2.SimpleMsg";\n'
                   '}')
 
     mSimpleJsonMsg = stl.message.Message(
-        'mSimpleJsonMsg', 'json', is_array=False)
+        'mSimpleJsonMsg', 'stl.lib.JsonEncoding', is_array=False)
     mSimpleJsonMsg.fields = [
-        stl.base.Field('msg', 'string'),
-        stl.base.Field('id', 'int', optional=True),
-        stl.base.Field('bits', 'bool', repeated=True)
+        stl.base.Field('msg', 'string'), stl.base.Field(
+            'id', 'int', optional=True), stl.base.Field(
+                'bits', 'bool', repeated=True)
     ]
 
     # See parser_test_proto.proto for the specificiation
     mSimpleProtobufMsg = stl.message.Message(
-        'mSimpleProtobufMsg', 'protobuf', is_array=False)
+        'mSimpleProtobufMsg', 'stl.lib.ProtobufEncoding', is_array=False)
     mSimpleProtobufMsg.fields = [
-        stl.base.Field('foo', 'string'),
-        stl.base.Field('fizz', 'int', optional=True),
-        stl.base.Field('buzz', 'bool', repeated=True)
+        stl.base.Field('foo', 'string'), stl.base.Field(
+            'fizz', 'int', optional=True), stl.base.Field(
+                'buzz', 'bool', repeated=True)
     ]
 
     self.expected_module_dict['messages'] = {
@@ -253,7 +251,7 @@ class StlParserTest(unittest.TestCase):
                   '// Messages\n'
                   '//\n'
                   'message mNestedJsonMsg {\n'
-                  '  encode "json";\n'
+                  '  encode "stl.lib.JsonEncoding";\n'
                   '\n'
                   '  required mInnerMsg inner;\n'
                   '  optional mExtraMsg extra;\n'
@@ -269,18 +267,17 @@ class StlParserTest(unittest.TestCase):
                   '}')
     mInnerMsg = stl.message.Message('mInnerMsg', None, is_array=False)
     mInnerMsg.fields = [
-        stl.base.Field('in', 'string'),
-        stl.base.Field('k', 'int')
+        stl.base.Field('in', 'string'), stl.base.Field('k', 'int')
     ]
 
     mExtraMsg = stl.message.Message('mExtraMsg', None, is_array=False)
     mExtraMsg.fields = [stl.base.Field('nums', 'int', repeated=True)]
 
     mNestedJsonMsg = stl.message.Message(
-        'mNestedJsonMsg', 'json', is_array=False)
+        'mNestedJsonMsg', 'stl.lib.JsonEncoding', is_array=False)
     mNestedJsonMsg.fields = [
-        stl.base.Field('inner', 'mInnerMsg'),
-        stl.base.Field('extra', 'mExtraMsg', optional=True)
+        stl.base.Field('inner', 'mInnerMsg'), stl.base.Field(
+            'extra', 'mExtraMsg', optional=True)
     ]
     mNestedJsonMsg.messages = {'mInnerMsg': mInnerMsg, 'mExtraMsg': mExtraMsg}
 
@@ -294,11 +291,12 @@ class StlParserTest(unittest.TestCase):
                   '// Messages\n'
                   '//\n'
                   'message[] mMessageArray {\n'
-                  '  encode "json";\n'
+                  '  encode "stl.lib.JsonEncoding";\n'
                   '  required string msg;\n'
                   '}')
 
-    mMessageArray = stl.message.Message('mMessageArray', 'json', is_array=True)
+    mMessageArray = stl.message.Message(
+        'mMessageArray', 'stl.lib.JsonEncoding', is_array=True)
     mMessageArray.fields = [stl.base.Field('msg', 'string')]
 
     self.expected_module_dict['messages'] = {'mMessageArray': mMessageArray}
@@ -358,16 +356,14 @@ class StlParserTest(unittest.TestCase):
 
     eEvent = stl.event.Event('eEvent')
     eEvent.params = [
-        stl.base.Param('id', 'int'),
-        stl.base.Param('name', 'string')
+        stl.base.Param('id', 'int'), stl.base.Param('name', 'string')
     ]
     eEvent.expand = stl.base.Expand('BuiltInFunction')
     eEvent.expand.values = [stl.base.Value('$id')]
 
     eSimpleEvent = stl.event.Event('eSimpleEvent')
     eSimpleEvent.params = [
-        stl.base.Param('a', 'int'),
-        stl.base.Param('b', 'int'),
+        stl.base.Param('a', 'int'), stl.base.Param('b', 'int'),
         stl.base.Param('c', 'int')
     ]
 
@@ -375,9 +371,7 @@ class StlParserTest(unittest.TestCase):
     eDerivedFromSimpleEvent.params = [stl.base.Param('q', 'int')]
     eDerivedFromSimpleEvent.expand = stl.base.Expand('eSimpleEvent')
     eDerivedFromSimpleEvent.expand.values = [
-        stl.base.Value('$q'),
-        stl.base.Value(0),
-        stl.base.Value(27)
+        stl.base.Value('$q'), stl.base.Value(0), stl.base.Value(27)
     ]
 
     self.expected_module_dict['events'] = {

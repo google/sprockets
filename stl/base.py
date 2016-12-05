@@ -231,7 +231,7 @@ class Value(NamedObject):
         return roles[var]
       raise NameError('Cannot find a local var or role: ' + var)
 
-    # Integer or string
+    # Literal value (integer, boolean, or string)
     return self.value
 
 
@@ -362,12 +362,15 @@ class Field(TypedObject):
         Meanless for roles.
     repeated: Whether or not this field is repeated in the given message.
         Meanless for roles.
+    encoding_props: Dictionary of miscellaneous property values, used for
+        custom encoding schemes.
   """
 
   def __init__(self, name, type_, optional=False, repeated=False):
     TypedObject.__init__(self, name, type_)
     self.optional = optional
     self.repeated = repeated
+    self.encoding_props = {}
     if self.repeated:
       self.optional = True
 
@@ -480,8 +483,7 @@ class Expand(NamedObject):
       new_resolved_fields = []
       for msg_element in msg_array.value:
         new_resolved_fields.append({
-            v.name:
-                v.Resolve(env, resolved_params)
+            v.name: v.Resolve(env, resolved_params)
             for v in msg_element.value
         })
     else:

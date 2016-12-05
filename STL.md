@@ -50,12 +50,12 @@ message mSimpleMessage {
 }
 
 message[] mMessageArray {
-  encode "json";
+  encode "stl.lib.JsonEncoding";
   required int i;
 }
 
 message mProtoMessage {
-  encode "protobuf";
+  encode "stl.lib.ProtobufEncoding";
   external "proto.example_pb2.SimpleMsg";
 }
 
@@ -198,7 +198,7 @@ A message can be nested with multiple messages, and may have parameters. A messa
 A message consists of one or more fields. A field can be **required**, **optional**, or **repeated**. It is similar to how fields are defined in [protocol buffer](https://developers.google.com/protocol-buffers/).
 ```
 message mMessageWithData {
-  encode "json";
+  encode "stl.lib.JsonEncoding";
 
   required int request_id;
   required string data;
@@ -212,10 +212,10 @@ message mMessageWithData {
 }
 ```
 
-A top-level message can specify encoding mechanism with **encode**. Currently, 3 encoding mechanisms are supported: "json", "bytestream", "protobuf". A protobuf message may specify the message defined in proto file with **protobuf_message** instead of listing all fields.
+A top-level message can specify encoding mechanism with **encode**. Currently, 2 library encoding mechanisms are supplied: stl.lib.JsonEncoding and stl.lib.Protobuf[Base64]Encoding (the latter can be encoded either as binary or a base64 string). A protobuf message may specify the message defined in proto file with **external** instead of listing all fields.
 ```
 message mProtoMessage {
-  encode "protobuf";
+  encode "stl.lib.ProtobufEncoding";
   external "proto.example_pb2.SimpleMsg";
 }
 ```
@@ -223,8 +223,18 @@ message mProtoMessage {
 A top-level (or not nested) message can be an array of same data format for given encoding mechanism.
 ```
 message[] mMessageArray {
-  encode "json";
+  encode "stl.lib.JsonEncoding";
   required int i;
+}
+```
+
+Users can write their own encoding schemes by extending the standard library's Encoding interface. A custom encoding is specified by its module path and class name. Messages with custom encodings can define special field properties to aid in encoding; these properties are simple key-value pairs that can be used to specify field sizes, ordering, and so on.
+
+```
+message mCustomEncodeMessage {
+  encode "example.KeyValueEncoding";
+  required int request_id : "ord" = 0, "key" = "ri";
+  required string data : "ord" = 1, "key" = "da";
 }
 ```
 

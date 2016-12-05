@@ -26,7 +26,7 @@ class MessageTest(unittest.TestCase):
 
   def testMessageEquality_NoNesting(self):
     mSimpleJsonMsg = stl.message.Message(
-        'mSimpleJsonMsg', 'json', is_array=False)
+        'mSimpleJsonMsg', 'stl.lib.JsonEncoding', is_array=False)
     mSimpleJsonMsg.fields = [
         stl.base.Field('msg', 'string'),
         stl.base.Field('id', 'int', optional=True),
@@ -34,7 +34,7 @@ class MessageTest(unittest.TestCase):
     ]
 
     mSimpleJsonMsg2 = stl.message.Message(
-        'mSimpleJsonMsg', 'json', is_array=False)
+        'mSimpleJsonMsg', 'stl.lib.JsonEncoding', is_array=False)
     mSimpleJsonMsg2.fields = [
         stl.base.Field('msg', 'string'),
         stl.base.Field('id', 'int', optional=True),
@@ -43,7 +43,7 @@ class MessageTest(unittest.TestCase):
     self.assertEqual(mSimpleJsonMsg, mSimpleJsonMsg2)
 
     mSimpleProtobufMsg = stl.message.Message(
-        'mSimpleProtobufMsg', 'protobuf', is_array=False)
+        'mSimpleProtobufMsg', 'stl.lib.ProtobufEncoding', is_array=False)
     mSimpleProtobufMsg.fields = [
         stl.base.Field('foo', 'string'),
         stl.base.Field('fizz', 'int', optional=True),
@@ -63,7 +63,7 @@ class MessageTest(unittest.TestCase):
     mExtraMsg.fields = [stl.base.Field('nums', 'int', repeated=True)]
 
     mNestedJsonMsg = stl.message.Message(
-        'mNestedJsonMsg', 'json', is_array=False)
+        'mNestedJsonMsg', 'stl.lib.JsonEncoding', is_array=False)
     mNestedJsonMsg.fields = [
         stl.base.Field('inner', 'mInnerMsg'),
         stl.base.Field('extra', 'mExtraMsg', optional=True)
@@ -71,7 +71,7 @@ class MessageTest(unittest.TestCase):
     mNestedJsonMsg.messages = {'mInnerMsg': mInnerMsg, 'mExtraMsg': mExtraMsg}
 
     mNestedJsonMsg2 = stl.message.Message(
-        'mNestedJsonMsg', 'json', is_array=False)
+        'mNestedJsonMsg', 'stl.lib.JsonEncoding', is_array=False)
     mNestedJsonMsg2.fields = [
         stl.base.Field('inner', 'mInnerMsg'),
         stl.base.Field('extra', 'mExtraMsg', optional=True)

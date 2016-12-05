@@ -11,11 +11,110 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Defines STL public library class."""
 
 import abc
+import base64
+import json
+import logging
 import random
+
+import stl.message
+
+
+class Encoding(object):
+  """Library class for implementing custom message encodings."""
+
+  __metaclass__ = abc.ABCMeta
+
+  @abc.abstractmethod
+  def SerializeToString(self, values, message_type):
+    """Serialize values into a string representation."""
+
+  @abc.abstractmethod
+  def ParseFromString(self, encoded, message_type):
+    """Parse string into a dictionary of values."""
+
+
+class JsonEncoding(Encoding):
+  """Encodes and decodes JSON messages."""
+
+  def SerializeToString(self, values, message_type):
+    return json.dumps(values)
+
+  def ParseFromString(self, encoded, message_type):
+    return json.loads(encoded)
+
+
+class ProtobufEncoding(Encoding):
+  """Encodes and decodes protobuf messages."""
+
+  def SerializeToString(self, values, message_type):
+    pbuf = message_type.external()
+    ProtobufEncoding._FillProtobufDict(values, pbuf)
+    logging.log(1, 'Filled protobuf: %s: %s', str(self), str(pbuf))
+    return pbuf.SerializeToString()
+
+  def ParseFromString(self, encoded, message_type):
+    pbuf = message_type.external()
+    try:
+      read_len = pbuf.MergeFromString(encoded)
+    except stl.message.DecodeError:
+      logging.exception('Could not decode protobuf.')
+      return False
+    assert read_len == len(encoded)
+    decoded_dict = {}
+    ProtobufEncoding._FillValueDict(pbuf, decoded_dict)
+    return decoded_dict
+
+  @staticmethod
+  def _FillValueDict(pbuf_dict, value_dict):
+    for f_desc, v in pbuf_dict.ListFields():
+      if f_desc.label == f_desc.LABEL_REPEATED:
+        value_dict[f_desc.name] = [
+            ProtobufEncoding._GetValueFromProtobuf(f_desc, e) for e in v
+        ]
+      else:
+        value_dict[f_desc.name] = ProtobufEncoding._GetValueFromProtobuf(f_desc,
+                                                                         v)
+
+  @staticmethod
+  def _GetValueFromProtobuf(desc, pbuf_value):
+    if desc.type != desc.TYPE_MESSAGE:
+      return pbuf_value
+    value_dict = {}
+    ProtobufEncoding._FillValueDict(pbuf_value, value_dict)
+    return value_dict
+
+  @staticmethod
+  def _FillProtobufDict(value_dict, pbuf_dict):
+    for k in value_dict:
+      if isinstance(value_dict[k], list):
+        pbuf_list = getattr(pbuf_dict, k)
+        for v in value_dict[k]:
+          if isinstance(v, dict):
+            ProtobufEncoding._FillProtobufDict(v, pbuf_list.add())
+          else:
+            pbuf_list.append(v)
+      elif isinstance(value_dict[k], dict):
+        ProtobufEncoding._FillProtobufDict(value_dict[k], getattr(pbuf_dict, k))
+      else:
+        setattr(pbuf_dict, k, value_dict[k])
+
+
+class ProtobufBase64Encoding(Encoding):
+  """Wraps protobuf-encoded messages with base64."""
+
+  def __init__(self):
+    self._proto_encoding = ProtobufEncoding()
+
+  def SerializeToString(self, values, message_type):
+    return base64.b64encode(
+        self._proto_encoding.SerializeToString(values, message_type))
+
+  def ParseFromString(self, encoded, message_type):
+    return self._proto_encoding.ParseFromString(
+        base64.b64decode(encoded), message_type)
 
 
 class Event(object):

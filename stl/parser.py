@@ -40,6 +40,7 @@ import stl.state
 class StlSyntaxError(SyntaxError):
   """Error for incorrect STL syntax."""
 
+
 ###################################################
 # Lexer
 
@@ -66,7 +67,7 @@ reserved = {
     'transition': 'TRANSITION',
 }
 
-literals = ';{}()[]=,.&'
+literals = ':;{}()[]=,.&'
 
 tokens = [
     'ARROW',  # ->
@@ -136,14 +137,16 @@ def _DebugLexer(lexer, data):
     print tok
     tok = lexer.token()
 
+
 ###################################################
 # Parser
 
 
 def _IsAlreadyDefined(name, module_dict):
   return (name in module_dict['consts'] or name in module_dict['roles'] or
-          name in module_dict['states'] or name in module_dict['messages'] or
-          name in module_dict['events'] or name in module_dict['transitions'])
+          name in module_dict['states'] or name in module_dict['qualifiers'] or
+          name in module_dict['messages'] or name in module_dict['events'] or
+          name in module_dict['transitions'])
 
 
 def _GetParser(filename, module_dict):
@@ -177,7 +180,7 @@ def _GetParser(filename, module_dict):
     if _IsAlreadyDefined(p[3], module_dict):
       logging.error('[%s:%d] Duplicated const: %s', filename, p.lineno(3), p[3])
       return
-    # TODO(byungchul): Type checking.
+    # TODO(byungchul): Type checking
     module_dict['consts'][p[3]] = stl.base.Const(p[3], p[2], p[5])
 
   def p_role_def(p):
@@ -201,8 +204,8 @@ def _GetParser(filename, module_dict):
     assert isinstance(p[1], list)
     for f in p[1]:
       if f.name == p[2].name:
-        logging.error('[%s:%d] Duplicated field: %s', filename, p.lineno(2),
-                      p[2])
+        logging.error('[%s:%d] Duplicated field: %s', filename,
+                      p.lineno(2), p[2])
         return
     p[1].append(p[2])
     p[0] = p[1]
@@ -239,22 +242,27 @@ def _GetParser(filename, module_dict):
     p[0] = p[1]
 
   def p_message_def(p):
-    """message_def : message_or_array NAME '{' ENCODE STRING_LITERAL ';' message_body_or_external '}'"""  # pylint: disable=line-too-long
+    """message_def : message_or_array NAME '{' encode_decl message_body_or_external '}' """  # pylint: disable=line-too-long
     if _IsAlreadyDefined(p[2], module_dict):
-      logging.error('[%s:%d] Duplicated message: %s', filename, p.lineno(2),
-                    p[2])
+      logging.error('[%s:%d] Duplicated message: %s', filename,
+                    p.lineno(2), p[2])
       return
-    if isinstance(p[7], tuple):  # message_body
-      msg = stl.message.Message(p[2], p[5], p[1])
-      msg.fields, msg.messages = p[7]
+    encode_name = p[4]
+    if isinstance(p[5], tuple):  # message_body
+      msg = stl.message.Message(p[2], encode_name, p[1])
+      msg.fields, msg.messages = p[5]
     else:  # EXTERNAL STRING_LITERAL ';'
-      msg = stl.message.MessageFromExternal(p[2], p[5], p[1], p[7])
+      msg = stl.message.MessageFromExternal(p[2], encode_name, p[1], p[5])
     module_dict['messages'][msg.name] = msg
 
   def p_message_or_array(p):
     """message_or_array : MESSAGE
                         | MESSAGE '[' ']' """
     p[0] = (len(p) == 4)  # True if it's a message array.
+
+  def p_encode_decl(p):
+    """encode_decl : ENCODE STRING_LITERAL ';' """
+    p[0] = p[2]
 
   def p_message_body_or_external(p):
     """message_body_or_external : message_body
@@ -290,11 +298,37 @@ def _GetParser(filename, module_dict):
       p[0][1][p[index].name] = p[index]
 
   def p_message_field(p):
-    """message_field : REQUIRED type NAME ';'
-                     | OPTIONAL type NAME ';'
-                     | REPEATED type NAME ';' """
+    """message_field : field_rule type NAME ';'
+                     | field_rule type NAME ':' field_property_list ';' """
     p[0] = stl.base.Field(p[3], p[2], p[1] == 'optional', p[1] == 'repeated')
+    if len(p) == 7:
+      p[0].encoding_props = p[5]
     p.set_lineno(0, p.lineno(3))
+
+  def p_field_rule(p):
+    """field_rule : REQUIRED
+                  | OPTIONAL
+                  | REPEATED"""
+    p[0] = p[1]
+
+  def p_field_property_list(p):
+    """field_property_list : field_property_list ',' field_property
+                           | field_property """
+    if len(p) == 2:  # first key-value pair
+      key, val = p[1]
+      p[0] = {key: val}
+      return
+    assert isinstance(p[1], dict)
+    key, val = p[3]
+    if key in p[1]:
+      logging.error('[%s:%d] Duplicated key: %s', filename, p.lineno(3), key)
+      return
+    p[1][key] = val
+    p[0] = p[1]
+
+  def p_field_property(p):
+    """field_property : STRING_LITERAL '=' constant """
+    p[0] = (p[1], p[3].value)
 
   def p_sub_message(p):
     """sub_message : MESSAGE NAME '{' message_body '}' """
@@ -304,7 +338,7 @@ def _GetParser(filename, module_dict):
     p.set_lineno(0, p.lineno(2))
 
   def p_qualifier_def(p):
-    """qualifier_def : QUALIFIER type NAME params '=' EXTERNAL STRING_LITERAL ';' """  # pylint: disable=line-too-long
+    """qualifier_def : QUALIFIER type NAME params '=' EXTERNAL STRING_LITERAL ';'"""  # pylint: disable=line-too-long
     qual = stl.qualifier.QualifierFromExternal(p[3], p[2], p[7])
     qual.params = p[4]
     module_dict['qualifiers'][qual.name] = qual
@@ -355,8 +389,8 @@ def _GetParser(filename, module_dict):
     assert isinstance(p[1], list)
     for f in p[1]:
       if f.name == p[2].name:
-        logging.error('[%s:%d] Duplicated local var: %s', filename, p.lineno(2),
-                      p[2].name)
+        logging.error('[%s:%d] Duplicated local var: %s', filename,
+                      p.lineno(2), p[2].name)
     p[1].append(p[2])
     p[0] = p[1]
 
@@ -394,8 +428,8 @@ def _GetParser(filename, module_dict):
     assert isinstance(p[1], list)
     for s in p[1]:
       if str(s) == str(p[3]):
-        logging.error('[%s:%d] Duplicated state: %s', filename, p.lineno(3),
-                      p[3])
+        logging.error('[%s:%d] Duplicated state: %s', filename,
+                      p.lineno(3), p[3])
         return
     p[1].append(p[3])
     p[0] = p[1]
@@ -425,8 +459,8 @@ def _GetParser(filename, module_dict):
     assert isinstance(p[1], list)
     for s in p[1]:
       if str(s) == str(p[3]):
-        logging.error('[%s:%d] Duplicated state: %s', filename, p.lineno(3),
-                      p[3])
+        logging.error('[%s:%d] Duplicated state: %s', filename,
+                      p.lineno(3), p[3])
         return
     p[1].append(p[3])
     p[0] = p[1]
@@ -473,8 +507,8 @@ def _GetParser(filename, module_dict):
     assert isinstance(p[1], list)
     for f in p[1]:
       if f.name == p[3].name:
-        logging.error('[%s:%d] Duplicated param: %s', filename, p.lineno(3),
-                      p[3])
+        logging.error('[%s:%d] Duplicated param: %s', filename,
+                      p.lineno(3), p[3])
         return
     p[1].append(p[3])
     p[0] = p[1]
@@ -485,7 +519,7 @@ def _GetParser(filename, module_dict):
     if len(p) == 3:
       p[0] = stl.base.Param(p[2], p[1])
     else:
-      p[0] = stl.base.Param(p[3], p[1])  # TODO(byungchul): Handle out param(&).
+      p[0] = stl.base.Param(p[3], p[1])  # TODO(byungchul): Handle out param (&)
 
   def p_param_values(p):
     """param_values : empty

@@ -40,22 +40,22 @@ state sTlsState(int tlsId) {
 // Messages
 //
 message mSimpleMessage {
-  encode "json";
+  encode "stl.lib.JsonEncoding";
   required string words;
 }
 
 message[] mMessageArray {
-  encode "json";
+  encode "stl.lib.JsonEncoding";
   required int i;
 }
 
 message mProtoMessage {
-  encode "protobuf";
+  encode "stl.lib.ProtobufEncoding";
   external "proto.example_pb2.SimpleMsg";
 }
 
 message mMessageWithData {
-  encode "json";
+  encode "stl.lib.JsonEncoding";
 
   required int request_id;
   required string data;
@@ -66,6 +66,12 @@ message mMessageWithData {
   message mNestedMessage {
     required string data;
   }
+}
+
+message mCustomEncodeMessage {
+  encode "example_lib.KeyValueEncoding";
+  required int request_id : "ord" = 0, "key" = "ri";
+  required string data : "ord" = 1, "key" = "da";
 }
 
 // Qualifiers
@@ -90,6 +96,17 @@ event SendResponse(int requestId, string data) =
                        data = data;
                      });
 
+event SendRequestCustom(int& requestId, string data) =
+    LogEncodedParams(mCustomEncodeMessage {
+                       request_id = UniqueInt(requestId) -> requestId;
+                       data = data;
+                     });
+
+event SendResponseCustom(int requestId, string data) =
+    LogEncodedParams(mCustomEncodeMessage {
+                       request_id = requestId;
+                       data = data;
+                     });
 
 // Transitions
 //
@@ -125,7 +142,17 @@ transition tRequestResponse(int tlsId) {
   post_states = []
 }
 
+transition tRequestResponseCustom(int tlsId) {
+  int requestId;
+  pre_states = [ sTlsState(tlsId).kConnected ]
+  events {
+    rSender -> SendRequestCustom(&requestId, "REQUEST") -> rReceiver;
+    rReceiver -> SendResponseCustom(requestId, "RESPONSE") -> rSender;
+  }
+  post_states = []
+}
 
 transition tConnectTlsActual = tConnectTls(1);
 transition tDisconnectTlsActual = tDisconnectTls(1);
 transition tRequestResponseActual = tRequestResponse(1);
+transition tRequestResponseCustomActual = tRequestResponseCustom(1);
