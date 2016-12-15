@@ -1,0 +1,80 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+# Copyright 2016 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+name: State Transition Language
+scopeName: source.stl
+fileTypes: [stl]
+uuid: 507fdb50-d543-486f-99ec-211866733818
+
+patterns:
+- name: string.stl
+  match: \".*\"
+- begin: (role)\s*([a-zA-Z0-9]+)\s*\{
+  beginCaptures:
+    '1': {name: keyword.type.stl}
+    '2': {name: entity.name.function.stl}
+  end: \}
+  patterns:
+  - include: $self
+- begin: (state)\s*([a-zA-Z0-9]+)\s*\{
+  beginCaptures:
+    '1': {name: keyword.type.stl}
+    '2': {name: entity.name.function.stl}
+  end: \}
+  patterns:
+  - include: $self
+- begin: (message)(\[\])?\s*([a-zA-Z0-9]+)\s*\{
+  beginCaptures:
+    '1': {name: keyword.type.stl}
+    '3': {name: entity.name.function.stl}
+  end: \}
+  patterns:
+  - include: $self
+- begin: ([a-zA-Z0-9]+)\s*\(
+  beginCaptures:
+    '1': {name: entity.name.function.stl}
+  end: \)
+  patterns:
+  - include: $self
+- begin: '([a-zA-Z0-9]+)\s*\{'
+  beginCaptures:
+    '1': {name: entity.name.function.stl}
+  end: \}
+  patterns:
+  - include: $self
+- begin: '([a-zA-Z0-9]+)\s*\['
+  beginCaptures:
+    '1': {name: entity.name.function.stl}
+  end: \]
+  patterns:
+  - include: $self
+- name: keyword.stl
+  match: const
+- name: keyword.transition.stl
+  match: pre_states|post_states|events
+- name: keyword.type.stl
+  match: role|qualifier|event|transition
+- name: storage.type.stl
+  match: int|string|double|bool
+- name: keyword.operator.stl
+  match: required|repeated|optional
+- name: keyword.other.stl
+  match: encode|external
+- name: constant.numeric.stl
+  match: \d*
+- name: comment.stl
+  match: //.*$
+...
