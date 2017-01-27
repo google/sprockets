@@ -1,4 +1,4 @@
-# Sprockets
+# Sprockets [![Build Status](https://travis-ci.org/google/sprockets.svg?branch=master)](https://travis-ci.org/google/sprockets)
 *Last updated at 2016-11-30*
 
 ## 0. Disclaimer
