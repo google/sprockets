@@ -1,0 +1,20 @@
+language: python
+sudo: required
+python:
+  - "2.6"
+  - "2.7"
+  - "3.2"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
+before-install:
+  - sudo apt-get install libgraphviz-dev
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - python -m unittest discover --start-directory stl/ --pattern "*_test.py"
+  - python -m unittest discover --start-directory example/ --pattern "*_test.py"
