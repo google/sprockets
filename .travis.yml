@@ -16,3 +16,7 @@ install:
 script:
   - python -m unittest discover --start-directory stl/ --pattern "*_test.py"
   - python -m unittest discover --start-directory example/ --pattern "*_test.py"
+
+notification:
+  email:
+    - sprockets-eng@googlegroups.com
