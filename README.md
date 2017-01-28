@@ -1,4 +1,4 @@
-# Sprockets [![Build Status](https://travis-ci.org/google/sprockets.svg?branch=master)](https://travis-ci.org/google/sprockets)
+# Sprockets [![Build Status](https://travis-ci.org/google/sprockets.svg?branch=master)](https://travis-ci.org/google/sprockets) [![LICENSE](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 *Last updated at 2016-11-30*
 
 ## 0. Disclaimer
