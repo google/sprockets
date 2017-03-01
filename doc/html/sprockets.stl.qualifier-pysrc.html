@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>sprockets.stl.qualifier</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="sprockets-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="sprockets-module.html">Package&nbsp;sprockets</a> ::
+        <a href="sprockets.stl-module.html">Package&nbsp;stl</a> ::
+        Module&nbsp;qualifier
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="sprockets.stl.qualifier-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="sprockets.stl.qualifier-module.html">Module sprockets.stl.qualifier</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment"># Copyright 2016 Google Inc. All rights reserved.</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-comment"># Licensed under the Apache License, Version 2.0 (the "License");</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-comment"># you may not use this file except in compliance with the License.</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-comment"># You may obtain a copy of the License at</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-comment">#     http://www.apache.org/licenses/LICENSE-2.0</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-comment"># Unless required by applicable law or agreed to in writing, software</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-comment"># distributed under the License is distributed on an "AS IS" BASIS,</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-comment"># See the License for the specific language governing permissions and</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-comment"># limitations under the License.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-docstring">"""Defines qualifier for message fields."""</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">importlib</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Package sprockets.stl=sprockets.stl-module.html"><a title="sprockets.stl" class="py-name" href="#" onclick="return doclink('link-0', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module sprockets.stl.base=sprockets.stl.base-module.html"><a title="sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-1', 'base', 'link-1');">base</a></tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"><tt class="py-comment"># TODO(seantopping): Support expanded qualifiers.</tt> </tt>
+<a name="Qualifier"></a><div id="Qualifier-def"><a name="L24"></a><tt class="py-lineno">24</tt> <a class="py-toggle" href="#" id="Qualifier-toggle" onclick="return toggle('Qualifier');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="sprockets.stl.qualifier.Qualifier-class.html">Qualifier</a><tt class="py-op">(</tt><tt class="py-base-class">stl</tt><tt class="py-op">.</tt><tt class="py-base-class">base</tt><tt class="py-op">.</tt><tt class="py-base-class">ParameterizedObject</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Qualifier-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="Qualifier-expanded"><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">  <tt class="py-docstring">"""Field qualifier for messages.</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"><tt class="py-docstring">  A user defined qualifier must inherit from stl.lib.Qualifier. Qualifiers</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"><tt class="py-docstring">  are used to validate and generate values for message fields.</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"><tt class="py-docstring">  Attributes:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line"><tt class="py-docstring">    qual_type: The field type to be qualified (int, bool, string, message).</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"> </tt>
+<a name="Qualifier.__init__"></a><div id="Qualifier.__init__-def"><a name="L34"></a><tt class="py-lineno">34</tt> <a class="py-toggle" href="#" id="Qualifier.__init__-toggle" onclick="return toggle('Qualifier.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="sprockets.stl.qualifier.Qualifier-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">qual_type</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Qualifier.__init__-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="Qualifier.__init__-expanded"><a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">    <tt id="link-2" class="py-name"><a title="sprockets.stl" class="py-name" href="#" onclick="return doclink('link-2', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name"><a title="sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-3', 'base', 'link-1');">base</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Class sprockets.stl.base.ParameterizedObject=sprockets.stl.base.ParameterizedObject-class.html"><a title="sprockets.stl.base.ParameterizedObject" class="py-name" href="#" onclick="return doclink('link-4', 'ParameterizedObject', 'link-4');">ParameterizedObject</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method sprockets.stl.base.Const.__init__()=sprockets.stl.base.Const-class.html#__init__,Method sprockets.stl.base.Expand.__init__()=sprockets.stl.base.Expand-class.html#__init__,Method sprockets.stl.base.Field.__init__()=sprockets.stl.base.Field-class.html#__init__,Method sprockets.stl.base.Func.__init__()=sprockets.stl.base.Func-class.html#__init__,Method sprockets.stl.base.FuncGetField.__init__()=sprockets.stl.base.FuncGetField-class.html#__init__,Method sprockets.stl.base.FuncNoOp.__init__()=sprockets.stl.base.FuncNoOp-class.html#__init__,Method sprockets.stl.base.FuncSet.__init__()=sprockets.stl.base.FuncSet-class.html#__init__,Method sprockets.stl.base.FuncWithContext.Context.__init__()=sprockets.stl.base.FuncWithContext.Context-class.html#__init__,Method sprockets.stl.base.FuncWithContext.__init__()=sprockets.stl.base.FuncWithContext-class.html#__init__,Method sprockets.stl.base.LocalVar.__init__()=sprockets.stl.base.LocalVar-class.html#__init__,Method sprockets.stl.base.NamedObject.__init__()=sprockets.stl.base.NamedObject-class.html#__init__,Method sprockets.stl.base.Param.__init__()=sprockets.stl.base.Param-class.html#__init__,Method sprockets.stl.base.ParameterizedObject.__init__()=sprockets.stl.base.ParameterizedObject-class.html#__init__,Method sprockets.stl.base.QualifierValue.Resolved.__init__()=sprockets.stl.base.QualifierValue.Resolved-class.html#__init__,Method sprockets.stl.base.QualifierValue.__init__()=sprockets.stl.base.QualifierValue-class.html#__init__,Method sprockets.stl.base.Role.__init__()=sprockets.stl.base.Role-class.html#__init__,Method sprockets.stl.base.TypedObject.__init__()=sprockets.stl.base.TypedObject-class.html#__init__,Method sprockets.stl.base.Value.__init__()=sprockets.stl.base.Value-class.html#__init__,Method sprockets.stl.event.Event.__init__()=sprockets.stl.event.Event-class.html#__init__,Method sprockets.stl.event.EventFromExternal.__init__()=sprockets.stl.event.EventFromExternal-class.html#__init__,Method sprockets.stl.event.EventInTransition.__init__()=sprockets.stl.event.EventInTransition-class.html#__init__,Method sprockets.stl.graph.StateVertex.__init__()=sprockets.stl.graph.StateVertex-class.html#__init__,Method sprockets.stl.graph.TransitionEdge.__init__()=sprockets.stl.graph.TransitionEdge-class.html#__init__,Method sprockets.stl.lib.AnyOf.__init__()=sprockets.stl.lib.AnyOf-class.html#__init__,Method sprockets.stl.lib.DifferentFrom.__init__()=sprockets.stl.lib.DifferentFrom-class.html#__init__,Method sprockets.stl.lib.ProtobufBase64Encoding.__init__()=sprockets.stl.lib.ProtobufBase64Encoding-class.html#__init__,Method sprockets.stl.lib.RandomBool.__init__()=sprockets.stl.lib.RandomBool-class.html#__init__,Method sprockets.stl.lib.RandomString.__init__()=sprockets.stl.lib.RandomString-class.html#__init__,Method sprockets.stl.lib.UniqueInt.__init__()=sprockets.stl.lib.UniqueInt-class.html#__init__,Method sprockets.stl.lib.UniqueString.__init__()=sprockets.stl.lib.UniqueString-class.html#__init__,Method sprockets.stl.message.Message.__init__()=sprockets.stl.message.Message-class.html#__init__,Method sprockets.stl.message.MessageFromExternal.__init__()=sprockets.stl.message.MessageFromExternal-class.html#__init__,Method sprockets.stl.message.MessageValue.__init__()=sprockets.stl.message.MessageValue-class.html#__init__,Method sprockets.stl.qualifier.Qualifier.__init__()=sprockets.stl.qualifier.Qualifier-class.html#__init__,Method sprockets.stl.qualifier.QualifierFromExternal.__init__()=sprockets.stl.qualifier.QualifierFromExternal-class.html#__init__,Method sprockets.stl.state.State.__init__()=sprockets.stl.state.State-class.html#__init__,Method sprockets.stl.state.StateResolved.__init__()=sprockets.stl.state.StateResolved-class.html#__init__,Method sprockets.stl.state.StateValue.__init__()=sprockets.stl.state.StateValue-class.html#__init__,Method sprockets.stl.state.StateValueInTransition.__init__()=sprockets.stl.state.StateValueInTransition-class.html#__init__,Method sprockets.stl.state.Transition.__init__()=sprockets.stl.state.Transition-class.html#__init__,Method sprockets.stl.traverse.Context.__init__()=sprockets.stl.traverse.Context-class.html#__init__"><a title="sprockets.stl.base.Const.__init__
+sprockets.stl.base.Expand.__init__
+sprockets.stl.base.Field.__init__
+sprockets.stl.base.Func.__init__
+sprockets.stl.base.FuncGetField.__init__
+sprockets.stl.base.FuncNoOp.__init__
+sprockets.stl.base.FuncSet.__init__
+sprockets.stl.base.FuncWithContext.Context.__init__
+sprockets.stl.base.FuncWithContext.__init__
+sprockets.stl.base.LocalVar.__init__
+sprockets.stl.base.NamedObject.__init__
+sprockets.stl.base.Param.__init__
+sprockets.stl.base.ParameterizedObject.__init__
+sprockets.stl.base.QualifierValue.Resolved.__init__
+sprockets.stl.base.QualifierValue.__init__
+sprockets.stl.base.Role.__init__
+sprockets.stl.base.TypedObject.__init__
+sprockets.stl.base.Value.__init__
+sprockets.stl.event.Event.__init__
+sprockets.stl.event.EventFromExternal.__init__
+sprockets.stl.event.EventInTransition.__init__
+sprockets.stl.graph.StateVertex.__init__
+sprockets.stl.graph.TransitionEdge.__init__
+sprockets.stl.lib.AnyOf.__init__
+sprockets.stl.lib.DifferentFrom.__init__
+sprockets.stl.lib.ProtobufBase64Encoding.__init__
+sprockets.stl.lib.RandomBool.__init__
+sprockets.stl.lib.RandomString.__init__
+sprockets.stl.lib.UniqueInt.__init__
+sprockets.stl.lib.UniqueString.__init__
+sprockets.stl.message.Message.__init__
+sprockets.stl.message.MessageFromExternal.__init__
+sprockets.stl.message.MessageValue.__init__
+sprockets.stl.qualifier.Qualifier.__init__
+sprockets.stl.qualifier.QualifierFromExternal.__init__
+sprockets.stl.state.State.__init__
+sprockets.stl.state.StateResolved.__init__
+sprockets.stl.state.StateValue.__init__
+sprockets.stl.state.StateValueInTransition.__init__
+sprockets.stl.state.Transition.__init__
+sprockets.stl.traverse.Context.__init__" class="py-name" href="#" onclick="return doclink('link-5', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">qual_type</tt> <tt class="py-op">=</tt> <tt class="py-name">qual_type</tt> </tt>
+</div><a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"> </tt>
+<a name="Qualifier.__eq__"></a><div id="Qualifier.__eq__-def"><a name="L38"></a><tt class="py-lineno">38</tt> <a class="py-toggle" href="#" id="Qualifier.__eq__-toggle" onclick="return toggle('Qualifier.__eq__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="sprockets.stl.qualifier.Qualifier-class.html#__eq__">__eq__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">other</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Qualifier.__eq__-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="Qualifier.__eq__-expanded"><a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt id="link-6" class="py-name"><a title="sprockets.stl" class="py-name" href="#" onclick="return doclink('link-6', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-7', 'base', 'link-1');">base</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="sprockets.stl.base.ParameterizedObject" class="py-name" href="#" onclick="return doclink('link-8', 'ParameterizedObject', 'link-4');">ParameterizedObject</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Method sprockets.stl.base.Const.__eq__()=sprockets.stl.base.Const-class.html#__eq__,Method sprockets.stl.base.Expand.__eq__()=sprockets.stl.base.Expand-class.html#__eq__,Method sprockets.stl.base.Field.__eq__()=sprockets.stl.base.Field-class.html#__eq__,Method sprockets.stl.base.NamedObject.__eq__()=sprockets.stl.base.NamedObject-class.html#__eq__,Method sprockets.stl.base.ParameterizedObject.__eq__()=sprockets.stl.base.ParameterizedObject-class.html#__eq__,Method sprockets.stl.base.QualifierValue.Resolved.__eq__()=sprockets.stl.base.QualifierValue.Resolved-class.html#__eq__,Method sprockets.stl.base.QualifierValue.__eq__()=sprockets.stl.base.QualifierValue-class.html#__eq__,Method sprockets.stl.base.Role.__eq__()=sprockets.stl.base.Role-class.html#__eq__,Method sprockets.stl.base.TypedObject.__eq__()=sprockets.stl.base.TypedObject-class.html#__eq__,Method sprockets.stl.base.Value.__eq__()=sprockets.stl.base.Value-class.html#__eq__,Method sprockets.stl.event.Event.__eq__()=sprockets.stl.event.Event-class.html#__eq__,Method sprockets.stl.event.EventFromExternal.__eq__()=sprockets.stl.event.EventFromExternal-class.html#__eq__,Method sprockets.stl.event.EventInTransition.__eq__()=sprockets.stl.event.EventInTransition-class.html#__eq__,Method sprockets.stl.graph.StateVertex.__eq__()=sprockets.stl.graph.StateVertex-class.html#__eq__,Method sprockets.stl.message.Message.__eq__()=sprockets.stl.message.Message-class.html#__eq__,Method sprockets.stl.qualifier.Qualifier.__eq__()=sprockets.stl.qualifier.Qualifier-class.html#__eq__,Method sprockets.stl.qualifier.QualifierFromExternal.__eq__()=sprockets.stl.qualifier.QualifierFromExternal-class.html#__eq__,Method sprockets.stl.state.State.__eq__()=sprockets.stl.state.State-class.html#__eq__,Method sprockets.stl.state.StateResolved.__eq__()=sprockets.stl.state.StateResolved-class.html#__eq__,Method sprockets.stl.state.StateValue.__eq__()=sprockets.stl.state.StateValue-class.html#__eq__,Method sprockets.stl.state.StateValueInTransition.__eq__()=sprockets.stl.state.StateValueInTransition-class.html#__eq__,Method sprockets.stl.state.Transition.__eq__()=sprockets.stl.state.Transition-class.html#__eq__"><a title="sprockets.stl.base.Const.__eq__
+sprockets.stl.base.Expand.__eq__
+sprockets.stl.base.Field.__eq__
+sprockets.stl.base.NamedObject.__eq__
+sprockets.stl.base.ParameterizedObject.__eq__
+sprockets.stl.base.QualifierValue.Resolved.__eq__
+sprockets.stl.base.QualifierValue.__eq__
+sprockets.stl.base.Role.__eq__
+sprockets.stl.base.TypedObject.__eq__
+sprockets.stl.base.Value.__eq__
+sprockets.stl.event.Event.__eq__
+sprockets.stl.event.EventFromExternal.__eq__
+sprockets.stl.event.EventInTransition.__eq__
+sprockets.stl.graph.StateVertex.__eq__
+sprockets.stl.message.Message.__eq__
+sprockets.stl.qualifier.Qualifier.__eq__
+sprockets.stl.qualifier.QualifierFromExternal.__eq__
+sprockets.stl.state.State.__eq__
+sprockets.stl.state.StateResolved.__eq__
+sprockets.stl.state.StateValue.__eq__
+sprockets.stl.state.StateValueInTransition.__eq__
+sprockets.stl.state.Transition.__eq__" class="py-name" href="#" onclick="return doclink('link-9', '__eq__', 'link-9');">__eq__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">other</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">qual_type</tt> <tt class="py-op">==</tt> <tt class="py-name">other</tt><tt class="py-op">.</tt><tt class="py-name">qual_type</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"> </tt>
+<a name="Qualifier.__str__"></a><div id="Qualifier.__str__-def"><a name="L42"></a><tt class="py-lineno">42</tt> <a class="py-toggle" href="#" id="Qualifier.__str__-toggle" onclick="return toggle('Qualifier.__str__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="sprockets.stl.qualifier.Qualifier-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Qualifier.__str__-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="Qualifier.__str__-expanded"><a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">'Qualifier %s: p(%s)'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt id="link-10" class="py-name"><a title="sprockets.stl" class="py-name" href="#" onclick="return doclink('link-10', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-11', 'base', 'link-1');">base</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Function sprockets.stl.base.GetCSV()=sprockets.stl.base-module.html#GetCSV"><a title="sprockets.stl.base.GetCSV" class="py-name" href="#" onclick="return doclink('link-12', 'GetCSV', 'link-12');">GetCSV</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">params</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line"> </tt>
+<a name="QualifierFromExternal"></a><div id="QualifierFromExternal-def"><a name="L46"></a><tt class="py-lineno">46</tt> <a class="py-toggle" href="#" id="QualifierFromExternal-toggle" onclick="return toggle('QualifierFromExternal');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="sprockets.stl.qualifier.QualifierFromExternal-class.html">QualifierFromExternal</a><tt class="py-op">(</tt><tt class="py-base-class">Qualifier</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QualifierFromExternal-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="QualifierFromExternal-expanded"><a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">  <tt class="py-docstring">"""Wraps an external qualifier defined in a python file.</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line"><tt class="py-docstring">  Example:</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"><tt class="py-docstring">  qualifier int RandomInt() = external "foo.bar.RandomInt";</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line"><tt class="py-docstring">  There should be a python module "foo.bar" with a class RandomInt that inherits</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"><tt class="py-docstring">  stl.lib.Qualifier.</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"><tt class="py-docstring">  Attributes:</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line"><tt class="py-docstring">    external_name: Name of class that extends stl.lib.Qualifier.</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"><tt class="py-docstring">    external: An instance of the stl.lib.Qualifier class.</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"> </tt>
+<a name="QualifierFromExternal.__init__"></a><div id="QualifierFromExternal.__init__-def"><a name="L60"></a><tt class="py-lineno">60</tt> <a class="py-toggle" href="#" id="QualifierFromExternal.__init__-toggle" onclick="return toggle('QualifierFromExternal.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="sprockets.stl.qualifier.QualifierFromExternal-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">qual_type</tt><tt class="py-op">,</tt> <tt class="py-param">external</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QualifierFromExternal.__init__-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="QualifierFromExternal.__init__-expanded"><a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">    <tt id="link-13" class="py-name" targets="Class sprockets.stl.lib.Qualifier=sprockets.stl.lib.Qualifier-class.html,Class sprockets.stl.qualifier.Qualifier=sprockets.stl.qualifier.Qualifier-class.html"><a title="sprockets.stl.lib.Qualifier
+sprockets.stl.qualifier.Qualifier" class="py-name" href="#" onclick="return doclink('link-13', 'Qualifier', 'link-13');">Qualifier</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="sprockets.stl.base.Const.__init__
+sprockets.stl.base.Expand.__init__
+sprockets.stl.base.Field.__init__
+sprockets.stl.base.Func.__init__
+sprockets.stl.base.FuncGetField.__init__
+sprockets.stl.base.FuncNoOp.__init__
+sprockets.stl.base.FuncSet.__init__
+sprockets.stl.base.FuncWithContext.Context.__init__
+sprockets.stl.base.FuncWithContext.__init__
+sprockets.stl.base.LocalVar.__init__
+sprockets.stl.base.NamedObject.__init__
+sprockets.stl.base.Param.__init__
+sprockets.stl.base.ParameterizedObject.__init__
+sprockets.stl.base.QualifierValue.Resolved.__init__
+sprockets.stl.base.QualifierValue.__init__
+sprockets.stl.base.Role.__init__
+sprockets.stl.base.TypedObject.__init__
+sprockets.stl.base.Value.__init__
+sprockets.stl.event.Event.__init__
+sprockets.stl.event.EventFromExternal.__init__
+sprockets.stl.event.EventInTransition.__init__
+sprockets.stl.graph.StateVertex.__init__
+sprockets.stl.graph.TransitionEdge.__init__
+sprockets.stl.lib.AnyOf.__init__
+sprockets.stl.lib.DifferentFrom.__init__
+sprockets.stl.lib.ProtobufBase64Encoding.__init__
+sprockets.stl.lib.RandomBool.__init__
+sprockets.stl.lib.RandomString.__init__
+sprockets.stl.lib.UniqueInt.__init__
+sprockets.stl.lib.UniqueString.__init__
+sprockets.stl.message.Message.__init__
+sprockets.stl.message.MessageFromExternal.__init__
+sprockets.stl.message.MessageValue.__init__
+sprockets.stl.qualifier.Qualifier.__init__
+sprockets.stl.qualifier.QualifierFromExternal.__init__
+sprockets.stl.state.State.__init__
+sprockets.stl.state.StateResolved.__init__
+sprockets.stl.state.StateValue.__init__
+sprockets.stl.state.StateValueInTransition.__init__
+sprockets.stl.state.Transition.__init__
+sprockets.stl.traverse.Context.__init__" class="py-name" href="#" onclick="return doclink('link-14', '__init__', 'link-5');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">qual_type</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">external_name</tt> <tt class="py-op">=</tt> <tt class="py-name">external</tt> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">    <tt class="py-name">module</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name" targets="Module sprockets.stl.event=sprockets.stl.event-module.html"><a title="sprockets.stl.event" class="py-name" href="#" onclick="return doclink('link-15', 'event', 'link-15');">event</a></tt> <tt class="py-op">=</tt> <tt class="py-name">external</tt><tt class="py-op">.</tt><tt class="py-name">rsplit</tt><tt class="py-op">(</tt><tt class="py-string">'.'</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">external</tt> <tt class="py-op">=</tt> <tt class="py-name">importlib</tt><tt class="py-op">.</tt><tt class="py-name">import_module</tt><tt class="py-op">(</tt><tt class="py-name">module</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">__getattribute__</tt><tt class="py-op">(</tt><tt id="link-16" class="py-name"><a title="sprockets.stl.event" class="py-name" href="#" onclick="return doclink('link-16', 'event', 'link-15');">event</a></tt><tt class="py-op">)</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line"> </tt>
+<a name="QualifierFromExternal.__eq__"></a><div id="QualifierFromExternal.__eq__-def"><a name="L66"></a><tt class="py-lineno">66</tt> <a class="py-toggle" href="#" id="QualifierFromExternal.__eq__-toggle" onclick="return toggle('QualifierFromExternal.__eq__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="sprockets.stl.qualifier.QualifierFromExternal-class.html#__eq__">__eq__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">other</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QualifierFromExternal.__eq__-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="QualifierFromExternal.__eq__-expanded"><a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt id="link-17" class="py-name"><a title="sprockets.stl.lib.Qualifier
+sprockets.stl.qualifier.Qualifier" class="py-name" href="#" onclick="return doclink('link-17', 'Qualifier', 'link-13');">Qualifier</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="sprockets.stl.base.Const.__eq__
+sprockets.stl.base.Expand.__eq__
+sprockets.stl.base.Field.__eq__
+sprockets.stl.base.NamedObject.__eq__
+sprockets.stl.base.ParameterizedObject.__eq__
+sprockets.stl.base.QualifierValue.Resolved.__eq__
+sprockets.stl.base.QualifierValue.__eq__
+sprockets.stl.base.Role.__eq__
+sprockets.stl.base.TypedObject.__eq__
+sprockets.stl.base.Value.__eq__
+sprockets.stl.event.Event.__eq__
+sprockets.stl.event.EventFromExternal.__eq__
+sprockets.stl.event.EventInTransition.__eq__
+sprockets.stl.graph.StateVertex.__eq__
+sprockets.stl.message.Message.__eq__
+sprockets.stl.qualifier.Qualifier.__eq__
+sprockets.stl.qualifier.QualifierFromExternal.__eq__
+sprockets.stl.state.State.__eq__
+sprockets.stl.state.StateResolved.__eq__
+sprockets.stl.state.StateValue.__eq__
+sprockets.stl.state.StateValueInTransition.__eq__
+sprockets.stl.state.Transition.__eq__" class="py-name" href="#" onclick="return doclink('link-18', '__eq__', 'link-9');">__eq__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">other</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">external_name</tt> <tt class="py-op">==</tt> <tt class="py-name">other</tt><tt class="py-op">.</tt><tt class="py-name">external_name</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line"> </tt>
+<a name="QualifierFromExternal.__str__"></a><div id="QualifierFromExternal.__str__-def"><a name="L70"></a><tt class="py-lineno">70</tt> <a class="py-toggle" href="#" id="QualifierFromExternal.__str__-toggle" onclick="return toggle('QualifierFromExternal.__str__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="sprockets.stl.qualifier.QualifierFromExternal-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QualifierFromExternal.__str__-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="QualifierFromExternal.__str__-expanded"><a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">'%s b(%s)'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt id="link-19" class="py-name"><a title="sprockets.stl.lib.Qualifier
+sprockets.stl.qualifier.Qualifier" class="py-name" href="#" onclick="return doclink('link-19', 'Qualifier', 'link-13');">Qualifier</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Method sprockets.stl.base.Const.__str__()=sprockets.stl.base.Const-class.html#__str__,Method sprockets.stl.base.Expand.__str__()=sprockets.stl.base.Expand-class.html#__str__,Method sprockets.stl.base.Field.__str__()=sprockets.stl.base.Field-class.html#__str__,Method sprockets.stl.base.Func.__str__()=sprockets.stl.base.Func-class.html#__str__,Method sprockets.stl.base.FuncGetField.__str__()=sprockets.stl.base.FuncGetField-class.html#__str__,Method sprockets.stl.base.FuncSet.__str__()=sprockets.stl.base.FuncSet-class.html#__str__,Method sprockets.stl.base.FuncWithContext.Context.__str__()=sprockets.stl.base.FuncWithContext.Context-class.html#__str__,Method sprockets.stl.base.FuncWithContext.__str__()=sprockets.stl.base.FuncWithContext-class.html#__str__,Method sprockets.stl.base.LocalVar.__str__()=sprockets.stl.base.LocalVar-class.html#__str__,Method sprockets.stl.base.Param.__str__()=sprockets.stl.base.Param-class.html#__str__,Method sprockets.stl.base.QualifierValue.Resolved.__str__()=sprockets.stl.base.QualifierValue.Resolved-class.html#__str__,Method sprockets.stl.base.QualifierValue.__str__()=sprockets.stl.base.QualifierValue-class.html#__str__,Method sprockets.stl.base.Role.__str__()=sprockets.stl.base.Role-class.html#__str__,Method sprockets.stl.base.Value.__str__()=sprockets.stl.base.Value-class.html#__str__,Method sprockets.stl.event.Event.__str__()=sprockets.stl.event.Event-class.html#__str__,Method sprockets.stl.event.EventFromExternal.__str__()=sprockets.stl.event.EventFromExternal-class.html#__str__,Method sprockets.stl.event.EventInTransition.__str__()=sprockets.stl.event.EventInTransition-class.html#__str__,Method sprockets.stl.graph.StateVertex.__str__()=sprockets.stl.graph.StateVertex-class.html#__str__,Method sprockets.stl.graph.TransitionEdge.__str__()=sprockets.stl.graph.TransitionEdge-class.html#__str__,Method sprockets.stl.message.Message.__str__()=sprockets.stl.message.Message-class.html#__str__,Method sprockets.stl.message.MessageFromExternal.__str__()=sprockets.stl.message.MessageFromExternal-class.html#__str__,Method sprockets.stl.message.MessageValue.__str__()=sprockets.stl.message.MessageValue-class.html#__str__,Method sprockets.stl.qualifier.Qualifier.__str__()=sprockets.stl.qualifier.Qualifier-class.html#__str__,Method sprockets.stl.qualifier.QualifierFromExternal.__str__()=sprockets.stl.qualifier.QualifierFromExternal-class.html#__str__,Method sprockets.stl.state.State.__str__()=sprockets.stl.state.State-class.html#__str__,Method sprockets.stl.state.StateResolved.__str__()=sprockets.stl.state.StateResolved-class.html#__str__,Method sprockets.stl.state.StateValue.__str__()=sprockets.stl.state.StateValue-class.html#__str__,Method sprockets.stl.state.StateValueInTransition.__str__()=sprockets.stl.state.StateValueInTransition-class.html#__str__,Method sprockets.stl.state.Transition.__str__()=sprockets.stl.state.Transition-class.html#__str__"><a title="sprockets.stl.base.Const.__str__
+sprockets.stl.base.Expand.__str__
+sprockets.stl.base.Field.__str__
+sprockets.stl.base.Func.__str__
+sprockets.stl.base.FuncGetField.__str__
+sprockets.stl.base.FuncSet.__str__
+sprockets.stl.base.FuncWithContext.Context.__str__
+sprockets.stl.base.FuncWithContext.__str__
+sprockets.stl.base.LocalVar.__str__
+sprockets.stl.base.Param.__str__
+sprockets.stl.base.QualifierValue.Resolved.__str__
+sprockets.stl.base.QualifierValue.__str__
+sprockets.stl.base.Role.__str__
+sprockets.stl.base.Value.__str__
+sprockets.stl.event.Event.__str__
+sprockets.stl.event.EventFromExternal.__str__
+sprockets.stl.event.EventInTransition.__str__
+sprockets.stl.graph.StateVertex.__str__
+sprockets.stl.graph.TransitionEdge.__str__
+sprockets.stl.message.Message.__str__
+sprockets.stl.message.MessageFromExternal.__str__
+sprockets.stl.message.MessageValue.__str__
+sprockets.stl.qualifier.Qualifier.__str__
+sprockets.stl.qualifier.QualifierFromExternal.__str__
+sprockets.stl.state.State.__str__
+sprockets.stl.state.StateResolved.__str__
+sprockets.stl.state.StateValue.__str__
+sprockets.stl.state.StateValueInTransition.__str__
+sprockets.stl.state.Transition.__str__" class="py-name" href="#" onclick="return doclink('link-20', '__str__', 'link-20');">__str__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">external_name</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line"> </tt>
+<a name="QualifierFromExternal.Resolve"></a><div id="QualifierFromExternal.Resolve-def"><a name="L73"></a><tt class="py-lineno">73</tt> <a class="py-toggle" href="#" id="QualifierFromExternal.Resolve-toggle" onclick="return toggle('QualifierFromExternal.Resolve');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="sprockets.stl.qualifier.QualifierFromExternal-class.html#Resolve">Resolve</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">env</tt><tt class="py-op">,</tt> <tt class="py-param">resolved_params</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QualifierFromExternal.Resolve-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="QualifierFromExternal.Resolve-expanded"><a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">    <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">log</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-string">'Resolving '</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">external</tt> </tt>
+</div></div><a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="sprockets-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Feb 27 16:17:07 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
