@@ -102,20 +102,20 @@ def LoadManifest(manifest_filename, manifest_args):
     sys.exit(3)
 
 
-def ParseStl(stl_file, modules):
+def ParseStl(stl_file, modules, parse_env):
   m = NewModuleDict()
-  stl.parser.Parse(stl_file, m)
+  stl.parser.Parse(stl_file, m, parse_env)
   # TODO(byungchul): Support module in multiple files.
   modules[m['name']] = m
 
 
-def LoadModules(manifest, test_manifest_filename):
+def LoadModules(manifest, test_manifest_filename, parse_env):
   """Builds transition graph for each module."""
   modules = {}
   if 'stl_files' in manifest:
     for f in manifest['stl_files']:
       f = os.path.join(os.path.dirname(test_manifest_filename), f)
-      ParseStl(f, modules)
+      ParseStl(f, modules, parse_env)
   logging.debug(str(modules))
   return modules
 
@@ -218,6 +218,7 @@ def TraverseGraph(transitions, states):
     attr = transition_graph[source][target][edge_i]
     transition = attr['transition']
     if attr['weight'] != float('inf'):
+      logging.info('\033[93m[ RUNNING ]\033[0m: %s', transition.name)
       if transition.Run():
         logging.info('\033[92m[ PASSED ]\033[0m: %s', transition.name)
         s.attr['fillcolor'] = 'grey'
@@ -270,7 +271,11 @@ def Main():
 
   manifest = LoadManifest(args.manifest, args.manifest_args)
 
-  modules = LoadModules(manifest, args.manifest)
+  parse_env = {}
+  modules = LoadModules(manifest, args.manifest, parse_env)
+
+  if 'error' in parse_env and parse_env['error']:
+    return False
 
   FillInModuleRoles(modules, manifest)
 

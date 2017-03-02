@@ -29,6 +29,7 @@ import ply.lex  # pylint: disable=g-bad-import-order
 import ply.yacc  # pylint: disable=g-bad-import-order
 import pprint
 import sys
+import traceback
 
 import stl.base
 import stl.event
@@ -149,7 +150,7 @@ def _IsAlreadyDefined(name, module_dict):
           name in module_dict['transitions'])
 
 
-def _GetParser(filename, module_dict):
+def _GetParser(filename, module_dict, parse_env):
   """Return a parser for STL."""
 
   def p_module(p):
@@ -252,7 +253,12 @@ def _GetParser(filename, module_dict):
       msg = stl.message.Message(p[2], encode_name, p[1])
       msg.fields, msg.messages = p[5]
     else:  # EXTERNAL STRING_LITERAL ';'
-      msg = stl.message.MessageFromExternal(p[2], encode_name, p[1], p[5])
+      try:
+        msg = stl.message.MessageFromExternal(p[2], encode_name, p[1], p[5])
+      except Exception as e:
+        logging.exception('Could not import message: %s', p[5])
+        parse_env['error'] = True
+        raise e
     module_dict['messages'][msg.name] = msg
 
   def p_message_or_array(p):
@@ -339,7 +345,12 @@ def _GetParser(filename, module_dict):
 
   def p_qualifier_def(p):
     """qualifier_def : QUALIFIER type NAME params '=' EXTERNAL STRING_LITERAL ';'"""  # pylint: disable=line-too-long
-    qual = stl.qualifier.QualifierFromExternal(p[3], p[2], p[7])
+    try:
+      qual = stl.qualifier.QualifierFromExternal(p[3], p[2], p[7])
+    except Exception as e:
+      logging.exception('Could not import qualifier: %s', p[7])
+      parse_env['error'] = True
+      raise e
     qual.params = p[4]
     module_dict['qualifiers'][qual.name] = qual
 
@@ -349,7 +360,12 @@ def _GetParser(filename, module_dict):
                  | EVENT NAME params '=' NAME param_values ';' """
     if len(p) == 8 and stl.base.IsString(p[6]):
       # NAME params = EXTERNAL STRING_LITERAL ;
-      evt = stl.event.EventFromExternal(p[2], p[6])
+      try:
+        evt = stl.event.EventFromExternal(p[2], p[6])
+      except Exception as e:
+        logging.exception('Could not import event: %s', p[6])
+        parse_env['error'] = True
+        raise e
     elif len(p) == 8 and isinstance(p[6], list):
       # NAME params = NAME param_values ;
       evt = stl.event.Event(p[2])
@@ -681,6 +697,7 @@ def _GetParser(filename, module_dict):
     p[0] = None
 
   def p_error(p):
+    parse_env['error'] = True
     if p is None:
       raise StlSyntaxError('[{}] Syntax error: '
                            'Reached end of file unexpectantly.'.format(
@@ -702,7 +719,7 @@ def _InitializeModuleDict(module_dict):
   module_dict.setdefault('transitions', {})
 
 
-def Parse(filename, module_dict):
+def Parse(filename, module_dict, parse_env):
   """Parse a state transition spec of |filename| and fill |module_dict|.
 
   Args:
@@ -721,14 +738,14 @@ def Parse(filename, module_dict):
 
   data = open(filename).read()
   lexer = _GetLexer(filename)
-  parser = _GetParser(filename, module_dict)
+  parser = _GetParser(filename, module_dict, parse_env)
 
   parser.parse(data, lexer=lexer)
 
 
 def _DebugParser(stl_filename):
   m = {}
-  Parse(stl_filename, m)
+  Parse(stl_filename, m, {})
   return m
 
 

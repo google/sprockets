@@ -34,9 +34,11 @@ class StlParserTest(unittest.TestCase):
   def setUp(self):
     self.actual_module_dict = {}
     stl.parser._InitializeModuleDict(self.actual_module_dict)
+    self.parse_env = {}
     self.lexer = stl.parser._GetLexer(self.TEST_FILENAME)
     self.parser = stl.parser._GetParser(self.TEST_FILENAME,
-                                        self.actual_module_dict)
+                                        self.actual_module_dict,
+                                        self.parse_env)
     self.expected_module_dict = {}
     stl.parser._InitializeModuleDict(self.expected_module_dict)
     self.expected_module_dict['name'] = 'foo'
@@ -66,22 +68,26 @@ class StlParserTest(unittest.TestCase):
                   'const int b = 2;')
     self.Parse(input_text)
     self.assertEqual(5, self.lexer.lineno)
+    self.assertFalse('error' in self.parse_env)
 
   def testEmptyFileFailure(self):
     input_text = ''
 
     with self.assertRaises(stl.parser.StlSyntaxError):
       self.Parse(input_text)
+    self.assertTrue('error' in self.parse_env and self.parse_env['error'])
 
   def testSingleCommentFailure(self):
     input_text = '// This is just a comment.'
     with self.assertRaises(stl.parser.StlSyntaxError):
       self.Parse(input_text)
+    self.assertTrue('error' in self.parse_env and self.parse_env['error'])
 
   def testEmptyModuleFailure(self):
     input_text = 'module foo;'
     with self.assertRaises(stl.parser.StlSyntaxError):
       self.Parse(input_text)
+    self.assertTrue('error' in self.parse_env and self.parse_env['error'])
 
   def testConst_Bool(self):
     input_text = ('module foo;\n'
@@ -96,6 +102,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testConst_Int(self):
     input_text = ('module foo;\n'
@@ -112,6 +119,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testConst_String(self):
     input_text = ('module foo;\n'
@@ -130,6 +138,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testRole(self):
     input_text = ('module foo;\n'
@@ -157,6 +166,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testState_NoParams(self):
     input_text = ('module foo;\n'
@@ -173,6 +183,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testState_Params(self):
     input_text = ('module foo;\n'
@@ -205,6 +216,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testMessages_NoNesting(self):
     input_text = ('module foo;\n'
@@ -245,6 +257,7 @@ class StlParserTest(unittest.TestCase):
     }
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testMessages_WithNesting(self):
     input_text = ('module foo;\n'
@@ -285,6 +298,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testMessages_IsArray(self):
     input_text = ('module foo;\n'
@@ -303,6 +317,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testQualifier_External(self):
     input_text = ('module foo;\n'
@@ -320,6 +335,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testEvent_NoDefinition(self):
     input_text = ('module foo;\n'
@@ -342,6 +358,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testEvent_WithDefinition(self):
     input_text = ('module foo;\n'
@@ -382,6 +399,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testEvent_WithMessage(self):
     input_text = ('module foo;\n'
@@ -412,6 +430,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testEvent_WithMessageArray(self):
     input_text = ('module foo;\n'
@@ -461,6 +480,7 @@ class StlParserTest(unittest.TestCase):
     _ = input_text
     # self.Parse(input_text)
     # self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    # self.assertFalse('error' in self.parse_env)
 
   def testTransition_NoVariablesNoOring(self):
     input_text = ('module foo;\n'
@@ -504,6 +524,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testTransition_WithOringNoVariables(self):
     input_text = ('module foo;\n'
@@ -553,6 +574,7 @@ class StlParserTest(unittest.TestCase):
     self.Parse(input_text)
     self.maxDiff = None
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
   def testTransition_WithVariables(self):
     input_text = ('module foo;\n'
@@ -588,6 +610,7 @@ class StlParserTest(unittest.TestCase):
 
     self.Parse(input_text)
     self.assertDictEqual(self.expected_module_dict, self.actual_module_dict)
+    self.assertFalse('error' in self.parse_env)
 
 
 if __name__ == '__main__':
