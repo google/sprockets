@@ -15,13 +15,13 @@ To run conformance tests, Sprockets users should provide:
 * **STL files** describing a system defined with a set of protocols (or specifications)
 * **External Python libraries** implementing external events and message encoders
 
-State transitions are specified with STL (State Transition Language). See [STL.md](STL.md) for details of STL.
+State transitions are specified with STL (State Transition Language). See [STL.md](doc/STL.md) for details of STL.
 
 test_driver.py is the main program made of Python to run conformance tests specified by users with a test manifest, STL files, and python libraries.
 
 ## 2. test_driver.py
 ### 2.1. Environment Setup
-To run test_dreiver.py, extra python packages below are necessary:
+To run test_driver.py, extra python packages below are necessary:
 
 * google.protobuf
 * ply
