@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Base classes, functions, exceptions."""
 
 import logging
@@ -117,7 +116,7 @@ class Const(TypedObject):
     value: Value for this constant. Resolve() returns it.
   """
 
-  def __init__(self, name, type_, value):
+  def __init__(self, name, type_, value=None):
     TypedObject.__init__(self, name, type_)
     self.value = value
 
@@ -199,11 +198,11 @@ class Value(NamedObject):
             return FuncGetField(v.obj, v.field)
         return v
       # Const?
-      consts = env['_current_module']['consts']
+      consts = env['_current_module'].consts
       if var in consts:
         return consts[var].Resolve(env, {})
       # Roles?
-      roles = env['_current_module']['roles']
+      roles = env['_current_module'].roles
       if var in roles:
         return roles[var]
       raise NameError('Cannot find a const, role or local var: ' + var)
@@ -226,7 +225,7 @@ class Value(NamedObject):
         if isinstance(local, LocalVar):
           return FuncSet(local)
       # Roles?
-      roles = env['_current_module']['roles']
+      roles = env['_current_module'].roles
       if var in roles:
         return roles[var]
       raise NameError('Cannot find a local var or role: ' + var)
@@ -413,16 +412,16 @@ class Role(NamedObject):
 
   def __getitem__(self, key):
     if key not in self.fields:
-      raise AttributeError("No field exists in role '%s': %s" %
-                           (self.name, key))
+      raise AttributeError("No field exists in role '%s': %s" % (self.name,
+                                                                 key))
     if key in self.field_values:
       return self.field_values[key]
     return None
 
   def __setitem__(self, key, value):
     if key not in self.fields:
-      raise AttributeError("No field exists in role '%s': %s" %
-                           (self.name, key))
+      raise AttributeError("No field exists in role '%s': %s" % (self.name,
+                                                                 key))
     # TODO(byungchul): Type checking.
     self.field_values[key] = value
 
@@ -440,7 +439,7 @@ class Role(NamedObject):
         raise NameError('Not a role: ' + name)
       return resolved_role
     # Find role in current module
-    roles = env['_current_module']['roles']
+    roles = env['_current_module'].roles
     if name not in roles:
       raise NameError('Cannot find a role: ' + name)
     return roles[name]
@@ -471,7 +470,7 @@ class Expand(NamedObject):
   def Resolve(self, env, resolved_params):
     # This function is called only for messages. Other expand is handled
     # separately, for example, by Transition or Event.
-    messages = env['_current_module']['messages']
+    messages = env['_current_module'].messages
     if self.name not in messages:
       raise NameError('Cannot find a message: ' + self.name)
     msg = messages[self.name]
@@ -631,10 +630,10 @@ class FuncWithContext(Func):
       self.test_source = False
 
     def __str__(self):
-      return ('CONTEXT: s(%s)%s, t(%s)%s' % (self.source, '*' if
-                                             self.test_source else '',
-                                             self.target, '*' if
-                                             not self.test_source else ''))
+      return ('CONTEXT: s(%s)%s, t(%s)%s' % (self.source,
+                                             '*' if self.test_source else '',
+                                             self.target,
+                                             '' if self.test_source else '*'))
 
   def __init__(self, name, event):
     Func.__init__(self, name)
@@ -642,9 +641,8 @@ class FuncWithContext(Func):
     self.context = FuncWithContext.Context()
 
   def __str__(self):
-    return ('FUNC %s: s(%s), t(%s), a(%s)' % (self.name, self.context.source,
-                                              self.context.target,
-                                              GetCSV(self.args)))
+    return ('FUNC %s: s(%s), t(%s), a(%s)' % (
+        self.name, self.context.source, self.context.target, GetCSV(self.args)))
 
   def Run(self):
     logging.log(2, 'Running ' + str(self))

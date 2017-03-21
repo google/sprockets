@@ -12,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 r"""Test Driver for Cast conformance test based on STL.
 
 To run:
@@ -37,25 +36,15 @@ def ParseArgs():
   """Returns the parsed command line args."""
   parser = argparse.ArgumentParser()
 
-  class KeyValueAction(argparse.Action):
-    """Convert "key1=value1 key2=value2" into the corresponding dict."""
-
-    def __init__(self, option_strings, dest, nargs=None, **kwargs):
-      super(KeyValueAction, self).__init__(option_strings, dest, **kwargs)
-
-    def __call__(self, parser, namespace, values, option_string=None):
-      key_value_pairs = [tuple(pair.split('=')) for pair in values.split()]
-      setattr(namespace, self.dest, dict(key_value_pairs))
-
   parser.add_argument('manifest', help='The manifest (*.test) file to run.')
   parser.add_argument(
       '-a',
       '--manifest-args',
-      help=('A series of space separated key=value pairs. '
-            'Each instance of $key in the manifest file is replaced by value '
-            'verbatim. In particular, if you want to pass a string, it must '
-            'be explicitly quoted, e.g.: ip="0.0.0.0"'),
-      action=KeyValueAction)
+      nargs='*',
+      help=('A list of <key>=<value> pairs. '
+            'Each instance of $<key> in the manifest file is replaced by '
+            '<value> verbatim. In particular, if you want to pass a string, it '
+            'must be explicitly quoted, e.g.: ip="0.0.0.0"'))
   parser.add_argument(
       '-d',
       '--debug',
@@ -63,17 +52,6 @@ def ParseArgs():
       action='store_true')
 
   return parser.parse_args()
-
-
-def NewModuleDict():
-  m = {}
-  m['consts'] = {}
-  m['roles'] = {}
-  m['states'] = {}
-  m['messages'] = {}
-  m['events'] = {}
-  m['transitions'] = {}
-  return m
 
 
 def AddManifestRootToPath(manifest_filename):
@@ -88,7 +66,8 @@ def LoadManifest(manifest_filename, manifest_args):
   with open(manifest_filename) as manifest_file:
     manifest = manifest_file.read()
     if manifest_args:
-      for key, value in manifest_args.iteritems():
+      for arg in manifest_args:
+        key, value = arg.split('=', 1)
         logging.debug('Replacing $%s with %s', key, value)
         manifest = manifest.replace('${}'.format(key), value)
 
@@ -102,35 +81,54 @@ def LoadManifest(manifest_filename, manifest_args):
     sys.exit(3)
 
 
-def ParseStl(stl_file, modules, parse_env):
-  m = NewModuleDict()
-  stl.parser.Parse(stl_file, m, parse_env)
-  # TODO(byungchul): Support module in multiple files.
-  modules[m['name']] = m
+def ParseStl(stl_file, global_env):
+  stl.parser.Parse(stl_file, global_env)
 
 
-def LoadModules(manifest, test_manifest_filename, parse_env):
+def LoadModules(manifest, test_manifest_filename, global_env):
   """Builds transition graph for each module."""
-  modules = {}
+  global_env = {'modules': {}}
   if 'stl_files' in manifest:
     for f in manifest['stl_files']:
       f = os.path.join(os.path.dirname(test_manifest_filename), f)
-      ParseStl(f, modules, parse_env)
-  logging.debug(str(modules))
-  return modules
+      ParseStl(f, global_env)
+  logging.debug(str(global_env['modules']))
+  return global_env['modules']
 
 
 def FillInModuleRoles(modules, manifest):
   """Fills in role information in |modules|."""
   for r in manifest['roles']:
     module, name = r['role'].split('::', 1)
-    if name not in modules[module]['roles']:
+    if name not in modules[module].roles:
       raise NameError("Cannot find a role in module '%s': %s" % (module, name))
-    role = modules[module]['roles'][name]
+    role = modules[module].roles[name]
     for v in r:
       if v == 'role':
         continue
       role[v] = r[v]
+
+
+def FillInConstants(modules, manifest):
+  """Fills in constant information in |modules|."""
+  if 'constants' not in manifest:
+    return
+  for key, val in manifest['constants'].iteritems():
+    module, name = key.split('::', 1)
+    if name not in modules[module].consts:
+      raise NameError("Cannot find a constant in module '%s': %s" % (module,
+                                                                     name))
+    const = modules[module].consts[name]
+    if const.value is not None:
+      raise RuntimeError("Const '%s' in module '%s' already has a value: %s" %
+                         (const.name, module, str(const.value)))
+    const.value = val
+  # Check that all consts are defined.
+  for module in modules.values():
+    for const in module.consts.values():
+      if const.value is None:
+        raise RuntimeError("Const '%s' in module '%s' is undefined." %
+                           (const.name, module.name))
 
 
 def GetRolesToTest(modules, manifest):
@@ -138,9 +136,9 @@ def GetRolesToTest(modules, manifest):
   roles_to_test = []
   for r in manifest['test']:
     module, name = r.split('::', 1)
-    if name not in modules[module]['roles']:
+    if name not in modules[module].roles:
       raise NameError("Cannot find a role in module '%s': %s" % (module, name))
-    roles_to_test.append(modules[module]['roles'][name])
+    roles_to_test.append(modules[module].roles[name])
   logging.debug(str(roles_to_test))
 
   if not roles_to_test:
@@ -156,8 +154,7 @@ def ResolveTransitions(modules, roles_to_test):
   transitions = {}
   for m in modules.itervalues():
     env['_current_module'] = m
-    m['resolved_transitions'] = {}
-    for t in m['transitions'].itervalues():
+    for t in m.transitions.itervalues():
       if t.params:
         continue
       resolved_t = t.Resolve(env, {})
@@ -190,8 +187,8 @@ def InitializeStates(transitions):
 
 def TraverseGraph(transitions, states):
   """Does that actual graph traversal, going through all transisitons."""
-  transition_graph, initial_vertex = stl.graph.BuildTransitionGraph(transitions,
-                                                                    states)
+  transition_graph, initial_vertex = stl.graph.BuildTransitionGraph(
+      transitions, states)
 
   # TODO(seantopping): Separate visualization from traversal algorithm.
   a_graph = nx.nx_agraph.to_agraph(transition_graph)
@@ -271,13 +268,14 @@ def Main():
 
   manifest = LoadManifest(args.manifest, args.manifest_args)
 
-  parse_env = {}
-  modules = LoadModules(manifest, args.manifest, parse_env)
+  global_env = {}
+  modules = LoadModules(manifest, args.manifest, global_env)
 
-  if 'error' in parse_env and parse_env['error']:
+  if 'error' in global_env and global_env['error']:
     return False
 
   FillInModuleRoles(modules, manifest)
+  FillInConstants(modules, manifest)
 
   roles_to_test = GetRolesToTest(modules, manifest)
 

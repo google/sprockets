@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Defines state and trasitions."""
 
 import logging
@@ -43,9 +42,8 @@ class State(stl.base.ParameterizedObject):
             self.values == other.values)
 
   def __str__(self):
-    return (
-        'STATE %s: p(%s) v(%s)' %
-        (self.name, stl.base.GetCSV(self.params), stl.base.GetCSV(self.values)))
+    return ('STATE %s: p(%s) v(%s)' % (self.name, stl.base.GetCSV(self.params),
+                                       stl.base.GetCSV(self.values)))
 
 
 class StateResolved(stl.base.ParameterizedObject):
@@ -89,9 +87,8 @@ class StateValue(stl.base.NamedObject):
     self.value = value
 
   def __str__(self):
-    return (
-        'STATE-VALUE %s(%s).%s' %
-        (self.name, stl.base.GetCSV(self.state.resolved_params), self.value))
+    return ('STATE-VALUE %s(%s).%s' % (
+        self.name, stl.base.GetCSV(self.state.resolved_params), self.value))
 
   def __eq__(self, other):
     return (stl.base.NamedObject.__eq__(self, other) and
@@ -127,7 +124,7 @@ class StateValueInTransition(stl.base.NamedObject):
   def Resolve(self, env, resolved_params):
     logging.log(1, 'Resolving ' + self.name)
     # TODO(byungchul): Support names in different modules.
-    states = env['_current_module']['states']
+    states = env['_current_module'].states
     if self.name not in states:
       raise NameError('Cannot find a state to expand: ' + self.name)
     found = states[self.name]
@@ -187,13 +184,12 @@ class Transition(stl.base.ParameterizedObject):
     self.expand = None
 
   def __eq__(self, other):
-    return (stl.base.ParameterizedObject.__eq__(self, other) and
-            self.local_vars == other.local_vars and
-            self.pre_states == other.pre_states and
-            self.events == other.events and
-            self.post_states == other.post_states and
-            self.error_states == other.error_states and
-            self.expand == other.expand)
+    return (
+        stl.base.ParameterizedObject.__eq__(self, other) and
+        self.local_vars == other.local_vars and
+        self.pre_states == other.pre_states and self.events == other.events and
+        self.post_states == other.post_states and
+        self.error_states == other.error_states and self.expand == other.expand)
 
   def __str__(self):
     if self.expand:
@@ -216,7 +212,7 @@ class Transition(stl.base.ParameterizedObject):
       if self.expand.name == self.name:
         raise NameError('Cannot expand self: ' + self.name)
       # TODO(byungchul): Support names in different modules.
-      transitions = env['_current_module']['transitions']
+      transitions = env['_current_module'].transitions
       if self.expand.name not in transitions:
         raise NameError('Cannot find a transition to expand: ' +
                         self.expand.name)

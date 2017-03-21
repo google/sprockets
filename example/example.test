@@ -12,15 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This test can be run from this directory with:
+# PYTHONPATH=$PYTHONPATH:$PWD/.. python run_test.py example.test
+#     -a ip=\"127.0.0.1\" hello_world='"Hello, world!"'
 {
-  'stl_files': ['example.stl'],
+  'stl_files': [
+    'example_base.stl',
+    'example.stl',
+  ],
 
   'roles': [  # Role information
     { 'role': 'example::rReceiver',
-      'ipAddress': $ip,  # Must pass --manifest-args="ip='0.0.0.0'" to run.
+      'ipAddress': $ip,  # Must pass --manifest-args 'ip="0.0.0.0"'
       'transportId': 'receiver-0',
     },
   ],
+
+  'constants': {
+    'example::kHelloWorld': $hello_world,  # Must pass --manifest-args \
+                                           # 'hello_world="Hello, world!"'
+  },
 
   'test': ['example::rReceiver'],
 }

@@ -12,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Parsing a state transition spec."""
 
 # pylint: disable=g-doc-args
@@ -29,11 +28,11 @@ import ply.lex  # pylint: disable=g-bad-import-order
 import ply.yacc  # pylint: disable=g-bad-import-order
 import pprint
 import sys
-import traceback
 
 import stl.base
 import stl.event
 import stl.message
+import stl.module
 import stl.qualifier
 import stl.state
 
@@ -143,15 +142,9 @@ def _DebugLexer(lexer, data):
 # Parser
 
 
-def _IsAlreadyDefined(name, module_dict):
-  return (name in module_dict['consts'] or name in module_dict['roles'] or
-          name in module_dict['states'] or name in module_dict['qualifiers'] or
-          name in module_dict['messages'] or name in module_dict['events'] or
-          name in module_dict['transitions'])
-
-
-def _GetParser(filename, module_dict, parse_env):
+def _GetParser(filename, global_env):
   """Return a parser for STL."""
+  local_env = {'_curr_module': None}
 
   def p_module(p):
     """module : module_def defs"""
@@ -159,7 +152,11 @@ def _GetParser(filename, module_dict, parse_env):
 
   def p_module_def(p):
     """module_def : MODULE NAME ';' """
-    module_dict['name'] = p[2]
+    if p[2] in global_env['modules']:
+      local_env['_curr_module'] = global_env['modules'][p[2]]
+    else:
+      local_env['_curr_module'] = stl.module.Module(p[2])
+      global_env['modules'][p[2]] = local_env['_curr_module']
 
   def p_defs(p):
     """defs : defs def
@@ -177,24 +174,28 @@ def _GetParser(filename, module_dict, parse_env):
     del p  # unused argument
 
   def p_const_def(p):
-    """const_def : CONST type NAME '=' value ';' """
-    if _IsAlreadyDefined(p[3], module_dict):
+    """const_def : CONST type NAME ';'
+                 | CONST type NAME '=' value ';' """
+    if local_env['_curr_module'].HasDefinition(p[3]):
       logging.error('[%s:%d] Duplicated const: %s', filename, p.lineno(3), p[3])
       return
     # TODO(byungchul): Type checking
-    module_dict['consts'][p[3]] = stl.base.Const(p[3], p[2], p[5])
+    if len(p) == 5:
+      local_env['_curr_module'].consts[p[3]] = stl.base.Const(p[3], p[2])
+    else:
+      local_env['_curr_module'].consts[p[3]] = stl.base.Const(p[3], p[2], p[5])
 
   def p_role_def(p):
     """role_def : ROLE NAME '{' '}'
                 | ROLE NAME '{' role_fields '}' """
-    if _IsAlreadyDefined(p[2], module_dict):
+    if local_env['_curr_module'].HasDefinition(p[2]):
       logging.error('[%s:%d] Duplicated role: %s', filename, p.lineno(2), p[2])
       return
     role = stl.base.Role(p[2])
     if len(p) >= 6:
       for f in p[4]:
         role.fields[f.name] = f
-    module_dict['roles'][role.name] = role
+    local_env['_curr_module'].roles[role.name] = role
 
   def p_role_fields(p):
     """role_fields : role_fields role_field
@@ -219,13 +220,13 @@ def _GetParser(filename, module_dict, parse_env):
   def p_state_def(p):
     """state_def : STATE NAME params '{' names '}'
                  | STATE NAME params '{' names ',' '}' """
-    if _IsAlreadyDefined(p[2], module_dict):
+    if local_env['_curr_module'].HasDefinition(p[2]):
       logging.error('[%s:%d] Duplicated state: %s', filename, p.lineno(2), p[2])
       return
     state_ = stl.state.State(p[2])
     state_.params = p[3]
     state_.values = p[5]
-    module_dict['states'][state_.name] = state_
+    local_env['_curr_module'].states[state_.name] = state_
 
   def p_names(p):
     """names : names ',' NAME
@@ -243,8 +244,8 @@ def _GetParser(filename, module_dict, parse_env):
     p[0] = p[1]
 
   def p_message_def(p):
-    """message_def : message_or_array NAME '{' encode_decl message_body_or_external '}' """  # pylint: disable=line-too-long
-    if _IsAlreadyDefined(p[2], module_dict):
+    """message_def : message_or_array NAME '{' encode_decl message_body_or_external '}'"""  # pylint: disable=line-too-long
+    if local_env['_curr_module'].HasDefinition(p[2]):
       logging.error('[%s:%d] Duplicated message: %s', filename,
                     p.lineno(2), p[2])
       return
@@ -257,9 +258,9 @@ def _GetParser(filename, module_dict, parse_env):
         msg = stl.message.MessageFromExternal(p[2], encode_name, p[1], p[5])
       except Exception as e:
         logging.exception('Could not import message: %s', p[5])
-        parse_env['error'] = True
+        global_env['error'] = True
         raise e
-    module_dict['messages'][msg.name] = msg
+    local_env['_curr_module'].messages[msg.name] = msg
 
   def p_message_or_array(p):
     """message_or_array : MESSAGE
@@ -349,10 +350,10 @@ def _GetParser(filename, module_dict, parse_env):
       qual = stl.qualifier.QualifierFromExternal(p[3], p[2], p[7])
     except Exception as e:
       logging.exception('Could not import qualifier: %s', p[7])
-      parse_env['error'] = True
+      global_env['error'] = True
       raise e
     qual.params = p[4]
-    module_dict['qualifiers'][qual.name] = qual
+    local_env['_curr_module'].qualifiers[qual.name] = qual
 
   def p_event_def(p):
     """event_def : EVENT NAME params ';'
@@ -364,7 +365,7 @@ def _GetParser(filename, module_dict, parse_env):
         evt = stl.event.EventFromExternal(p[2], p[6])
       except Exception as e:
         logging.exception('Could not import event: %s', p[6])
-        parse_env['error'] = True
+        global_env['error'] = True
         raise e
     elif len(p) == 8 and isinstance(p[6], list):
       # NAME params = NAME param_values ;
@@ -377,7 +378,7 @@ def _GetParser(filename, module_dict, parse_env):
       evt = stl.event.Event(p[2])
 
     evt.params = p[3]
-    module_dict['events'][evt.name] = evt
+    local_env['_curr_module'].events[evt.name] = evt
 
   def p_transition_def(p):
     """transition_def : TRANSITION NAME params '{' transition_body '}'
@@ -390,7 +391,7 @@ def _GetParser(filename, module_dict, parse_env):
     else:
       (trans.local_vars, trans.pre_states, trans.events, trans.post_states,
        trans.error_states) = p[5]
-    module_dict['transitions'][trans.name] = trans
+    local_env['_curr_module'].transitions[trans.name] = trans
 
   def p_transition_body(p):
     """transition_body : local_vars pre_states events post_states error_states"""  # pylint: disable=line-too-long
@@ -673,7 +674,7 @@ def _GetParser(filename, module_dict, parse_env):
   def p_qualifier_value(p):
     """qualifier_value : NAME param_values ARROW reference
                        | NAME param_values"""
-    qual = module_dict['qualifiers'][p[1]]
+    qual = local_env['_curr_module'].qualifiers[p[1]]
     assert qual
     if len(p) == 5:
       p[0] = stl.base.QualifierValue(qual, p[2], stl.base.Value('&' + p[4]))
@@ -697,11 +698,11 @@ def _GetParser(filename, module_dict, parse_env):
     p[0] = None
 
   def p_error(p):
-    parse_env['error'] = True
+    global_env['error'] = True
     if p is None:
-      raise StlSyntaxError('[{}] Syntax error: '
-                           'Reached end of file unexpectantly.'.format(
-                               filename))
+      raise StlSyntaxError(
+          '[{}] Syntax error: '
+          'Reached end of file unexpectantly.'.format(filename))
     else:
       raise StlSyntaxError('[{}:{}] Syntax error at: {}'.format(
           filename, p.lexer.lineno, p.value))
@@ -709,44 +710,25 @@ def _GetParser(filename, module_dict, parse_env):
   return ply.yacc.yacc()
 
 
-def _InitializeModuleDict(module_dict):
-  module_dict.setdefault('consts', {})
-  module_dict.setdefault('roles', {})
-  module_dict.setdefault('states', {})
-  module_dict.setdefault('messages', {})
-  module_dict.setdefault('qualifiers', {})
-  module_dict.setdefault('events', {})
-  module_dict.setdefault('transitions', {})
-
-
-def Parse(filename, module_dict, parse_env):
+def Parse(filename, global_env):
   """Parse a state transition spec of |filename| and fill |module_dict|.
 
   Args:
     filename: A state transition spec file.
-    module_dict: Dictionary to store state transition spec. Its contents are
-        module_dict['name']: Name of module.
-        module_dict['consts']: Constants.
-        module_dict['roles']: Roles.
-        module_dict['states']: States.
-        module_dict['messages']: Messages.
-        module_dict['qualifiers']: Qualifiers.
-        module_dict['events']: Events.
-        module_dict['transitions']: State transitions.
+    global_env: Dictionary to store global STL state. It has one field:
+      global_env['modules']: Dictionary of stl.module.Module by name.
   """
-  _InitializeModuleDict(module_dict)
-
   data = open(filename).read()
   lexer = _GetLexer(filename)
-  parser = _GetParser(filename, module_dict, parse_env)
+  parser = _GetParser(filename, global_env)
 
   parser.parse(data, lexer=lexer)
 
 
 def _DebugParser(stl_filename):
-  m = {}
-  Parse(stl_filename, m, {})
-  return m
+  global_env = {'modules': {}}
+  Parse(stl_filename, global_env)
+  return global_env
 
 
 def main():
