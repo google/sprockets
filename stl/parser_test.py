@@ -35,8 +35,8 @@ class StlParserTest(unittest.TestCase):
   def setUp(self):
     self.actual_module = stl.module.Module('foo')
     self.global_env = {'modules': {'foo': self.actual_module}}
-    self.lexer = stl.parser._GetLexer(self.TEST_FILENAME)
-    self.parser = stl.parser._GetParser(self.TEST_FILENAME, self.global_env)
+    self.parser = stl.parser.StlParser(self.TEST_FILENAME, self.global_env)
+    self.lexer = self.parser.lexer.lexer
     self.expected_module = stl.module.Module('foo')
 
   def tearDown(self):
@@ -49,7 +49,7 @@ class StlParserTest(unittest.TestCase):
     Args:
       text: The text to parse.
     """
-    self.parser.parse(text, lexer=self.lexer)
+    self.parser.parse(text)
 
   def testLineNumber(self):
     input_text = ('module foo;\n'
