@@ -23,12 +23,15 @@
 # pylint: disable=invalid-name
 # pylint: disable=unused-variable
 
+import collections
 import logging
 import ply.yacc  # pylint: disable=g-bad-import-order
 import pprint
 import sys
 
 import stl.base
+import stl.error_formatter
+import stl.error_handler
 import stl.event
 import stl.lexer
 import stl.message
@@ -41,13 +44,12 @@ class StlSyntaxError(SyntaxError):
   """Error for incorrect STL syntax."""
 
 
-
 class StlParser(object):
   """A parser for Sprockets STL files."""
 
   tokens = stl.lexer.StlLexer.tokens
 
-  def __init__(self, filename=None, global_env=None):
+  def __init__(self, filename=None, global_env=None, error_formatter=None):
     """Creates an StlParser with an StlLexer.
 
     Args:
@@ -60,6 +62,8 @@ class StlParser(object):
     self._local_env = {'_curr_module': None}
     self.lexer = stl.lexer.StlLexer(self._filename)
     self.parser = ply.yacc.yacc(module=self)
+    error_formatter = error_formatter or stl.error_formatter.PrettyErrorFormatter()
+    self.error_handler = stl.error_handler.ParserErrorHandler(error_formatter)
 
   def parse(self, data):
     """Parses the |data| string and returns an updated global_env."""
@@ -281,7 +285,7 @@ class StlParser(object):
                  | EVENT NAME params '=' EXTERNAL STRING_LITERAL ';'
                  | EVENT NAME params '=' NAME param_values ';' """
     if len(p) == 8 and stl.base.IsString(p[6]):
-      # NAME params = EXTERNAL STRING_LITERAL ;
+#NAME params = EXTERNAL STRING_LITERAL;
       try:
         evt = stl.event.EventFromExternal(p[2], p[6])
       except Exception as e:
@@ -509,7 +513,7 @@ class StlParser(object):
     """reference : NAME
                  | reference '.' NAME"""
     # TODO(byungchul): Support other module's names.
-    # TODO(byungchul): Build FuncGetField or FuncSet here.
+#TODO(byungchul) : Build FuncGetField or FuncSet here.
     if len(p) == 2:
       p[0] = p[1]
     else:
@@ -624,6 +628,10 @@ class StlParser(object):
       raise StlSyntaxError(
           '[{}] Syntax error: '
           'Reached end of file unexpectantly.'.format(self._filename))
+
+
+    print self.error_handler.get_error(
+        self._filename, self.parser, self.lexer.lexer)
 
     raise StlSyntaxError('[{}:{}] Syntax error at: {}'.format(
         self._filename, p.lexer.lineno, p.value))
