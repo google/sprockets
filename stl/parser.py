@@ -23,7 +23,6 @@
 # pylint: disable=invalid-name
 # pylint: disable=unused-variable
 
-import collections
 import logging
 import ply.yacc  # pylint: disable=g-bad-import-order
 import pprint
@@ -285,7 +284,7 @@ class StlParser(object):
                  | EVENT NAME params '=' EXTERNAL STRING_LITERAL ';'
                  | EVENT NAME params '=' NAME param_values ';' """
     if len(p) == 8 and stl.base.IsString(p[6]):
-#NAME params = EXTERNAL STRING_LITERAL;
+      #NAME params = EXTERNAL STRING_LITERAL;
       try:
         evt = stl.event.EventFromExternal(p[2], p[6])
       except Exception as e:
@@ -513,7 +512,7 @@ class StlParser(object):
     """reference : NAME
                  | reference '.' NAME"""
     # TODO(byungchul): Support other module's names.
-#TODO(byungchul) : Build FuncGetField or FuncSet here.
+    #TODO(byungchul) : Build FuncGetField or FuncSet here.
     if len(p) == 2:
       p[0] = p[1]
     else:
