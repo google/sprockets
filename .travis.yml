@@ -8,10 +8,16 @@ before-install:
 
 install:
   - pip install -r requirements.txt
+  - sudo apt-get install pylint
 
 script:
+  # Run the unittests
   - python -m unittest discover --start-directory stl/ --pattern "*_test.py"
   - python -m unittest discover --start-directory example/ --pattern "*_test.py"
+
+  # Run the linter
+  - PYTHONPATH=.:$PYTHONPATH pylint --rcfile=.pylintrc stl
+  - PYTHONPATH=.:$PYTHONPATH pylint --rcfile=.pylintrc example
 
 notification:
   email:
