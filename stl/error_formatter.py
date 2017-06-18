@@ -1,3 +1,19 @@
+# Copyright 2017 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Module for formatting parser/syntax errors."""
+
 import abc
 import json
 import re
@@ -8,24 +24,21 @@ class ErrorFormatter(object):
   __metaclass__ = abc.ABCMeta
 
   @abc.abstractmethod
-  def format(self, error):
-    """Outputs parser_error.ErrorInfo |error| in a custom format."""
+  def Format(self, error):
+    """Outputs error_handler.ErrorInfo |error| in a custom format."""
     pass
 
 
 class JsonErrorFormatter(ErrorFormatter):
   """Format errors as json objects."""
 
-  def format(self, error):
+  def Format(self, error):
     """Format |error| as json."""
     return json.dumps(error._asdict())
 
 
 class Color(object):
   """ANSI escape code base color codes.
-
-  For foreground colors, add 30 to the color value.
-  For background colors, add 40 to the color value.
 
   See https://en.wikipedia.org/wiki/ANSI_escape_code#Colors for more info.
   """
@@ -39,47 +52,73 @@ class Color(object):
   CYAN = 6
   WHITE = 7
   DEFAULT = 9
+  
+  @staticmethod
+  def _IsBaseColor(color):
+    return color in [Color.BLACK,
+                     Color.RED,
+                     Color.GREEN,
+                     Color.YELLOW,
+                     Color.BLUE,
+                     Color.MAGENTA,
+                     Color.CYAN,
+                     Color.WHITE,
+                     Color.DEFAULT]
+
+  @staticmethod
+  def Foreground(color):
+    """Converts |color| into its foreground color code."""
+    if not Color._IsBaseColor(color)
+      raise ValueError('Expected a Color.COLOR constant, found: {}'.format(color))
+    return color + 30
+  
+  @staticmethod
+    def Background(color):
+      """Converts |color| into its background color code."""
+      if not Color._IsBaseColor(color):
+        raise ValueError('Expected a Color.COLOR constant, found: {}'.format(color))  
+      return color + 40  
 
 
 class PrettyErrorFormatter(ErrorFormatter):
   """Pretty-ify errors with colors, highlights, and helpful markings."""
 
-  ERROR_COLOR = Color.RED
-  ANNOTATION_COLOR = Color.YELLOW
+  _ERROR_COLOR = Color.RED
+  _ANNOTATION_COLOR = Color.YELLOW
 
-  def colorize(self,
+  def _Colorize(self,
                text,
                foreground=Color.DEFAULT,
                background=Color.DEFAULT,
                bold=True):
     bold = int(bold)
-    fg_color = foreground + 30
-    bg_color = background + 40
+    fg_color = Color.Foreground(foreground) 
+    bg_color = Color.Background(background)
     return '\x1b[{bold};{fg_color};{bg_color}m{text}\x1b[0m'.format(
         text=text, bold=bold, fg_color=fg_color, bg_color=bg_color)
 
-  def get_message_line(self, error):
+  def _GetMessageLine(self, error):
     """Returns the formatted line with the error message."""
     file_position = '{}:{}:{}'.format(
         error.filename, error.position.line, error.position.start)
     return '{}({}): {}'.format(
-        self.colorize('error', self.ERROR_COLOR),
-        self.colorize(file_position, self.ANNOTATION_COLOR, bold=False),
+        self._Colorize('error', self._ERROR_COLOR),
+        self._Colorize(file_position, self._ANNOTATION_COLOR, bold=False),
         error.message)
 
-  def get_source_line(self, error):
+  def _GetSourceLine(self, error):
     """Returns the formatted line from the source that caused the error."""
-    return '{}{}'.format(self.get_line_number_prefix(error), error.line)
+    return '{}{}'.format(self._GetLineNumberPrefix(error), error.line)
 
-  def get_source_annotation_line(self, error):
+  def _GetSourceAnnotatinoLine(self, error):
     """Returns a line that highlights the original source."""
     pre_annotation = ' ' * error.position.start
     annotation = '^' * (error.position.end - error.position.start + 1)
     return '{}{}'.format(
-        self.get_line_number_prefix(error, show_number=False),
-        self.colorize(pre_annotation + annotation, self.ANNOTATION_COLOR))
+        self._GetLineNumberPrefix(error, show_number=False),
+        self._Colorize(pre_annotation + annotation, self._ANNOTATION_COLOR))
 
-  def get_line_number_prefix(self, error, show_number=True):
+  def _GetLineNumberPrefix(self, error, show_number=True):
     """Returns a prefix to annotate a line with a line number.
 
     Args:
@@ -91,10 +130,9 @@ class PrettyErrorFormatter(ErrorFormatter):
     if show_number:
       return prefix_with_number
     return re.sub('\d', ' ', prefix_with_number)
-
-
-  def format(self, error):
-    lines = [self.get_message_line(error),
-             self.get_source_line(error),
-             self.get_source_annotation_line(error),]
+  
+  def Format(self, error):
+    lines = [self._GetMessageLine(error),
+             self._GetSourceLine(error),
+             self._GetSourceAnnotationLine(error),]
     return '\n'.join(lines)
