@@ -68,7 +68,7 @@ class Color(object):
   @staticmethod
   def Foreground(color):
     """Converts |color| into its foreground color code."""
-    if not Color._IsBaseColor(color)
+    if not Color._IsBaseColor(color):
       raise ValueError('Expected a Color.COLOR constant, found: {}'.format(color))
     return color + 30
   
