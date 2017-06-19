@@ -16,8 +16,8 @@ script:
   - python -m unittest discover --start-directory example/ --pattern "*_test.py"
 
   # Run the linter
-  - depot_tools/pylint stl
-  - depot_tools/pylint example
+  - depot_tools/pylint stl --ignore=parsetab.py,parser_test_proto_pb2.py
+  - depot_tools/pylint example --ignore=example_pb2.py
 
 notification:
   email:
