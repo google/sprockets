@@ -15,11 +15,12 @@
 
 import importlib
 import logging
+
 from google.protobuf import message
 from google.protobuf import reflection
 
-import stl.base  # pylint: disable=g-bad-import-order
-import stl.lib  # pylint: disable=g-bad-import-order
+import stl.base
+import stl.lib
 
 
 class Message(stl.base.NamedObject):
