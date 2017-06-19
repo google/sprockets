@@ -247,20 +247,20 @@ class UniqueString(Qualifier):
   def __init__(self):
     Qualifier.__init__(self)
     self.num = 0
-    self.previous = set()
+    self.used_values = set()
 
-  def Validate(self, value, prev):
-    self.previous.add(prev)
-    valid = value not in self.previous
+  def Validate(self, value):
+    valid = value not in self.used_values
+    self.used_values.add(value)
     return valid
 
-  def Generate(self, prev):
-    self.previous.add(prev)
+  def Generate(self):
     value = 'unique-%d' % self.num
     self.num += 1
-    while value in self.previous:
+    while value in self.used_values:
       value = 'unique-%d' % self.num
       self.num += 1
+    self.used_values.add(value)
     return value
 
 
@@ -269,21 +269,21 @@ class UniqueInt(Qualifier):
 
   def __init__(self):
     Qualifier.__init__(self)
-    self.num = 1
-    self.previous = set()
+    self.num = 0
+    self.used_values = set()
 
-  def Validate(self, value, prev):
-    self.previous.add(prev)
-    valid = value not in self.previous
+  def Validate(self, value):
+    valid = value not in self.used_values
+    self.used_values.add(value)
     return valid
 
-  def Generate(self, prev):
-    self.previous.add(prev)
+  def Generate(self):
     value = self.num
     self.num += 1
-    while value in self.previous:
+    while value in self.used_values:
       value = self.num
       self.num += 1
+    self.used_values.add(value)
     return value
 
 

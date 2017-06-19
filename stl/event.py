@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Defines events."""
 
 import importlib
@@ -45,8 +44,8 @@ class Event(stl.base.ParameterizedObject):
             self.expand == other.expand)
 
   def __str__(self):
-    return ('EVENT %s: p(%s) e(%s)' %
-            (self.name, stl.base.GetCSV(self.params), str(self.expand)))
+    return ('EVENT %s: p(%s) e(%s)' % (self.name, stl.base.GetCSV(self.params),
+                                       str(self.expand)))
 
   def Resolve(self, env, resolved_params):
     logging.log(1, 'Resolving ' + self.name)
@@ -62,7 +61,7 @@ class Event(stl.base.ParameterizedObject):
   def ResolveStatic(name, values, env, resolved_params):
     """A helper function to resolve events."""
     # TODO(byungchul): Support names in different modules.
-    events = env['_current_module']['events']
+    events = env['_current_module'].events
     found = events.get(name)
     if not found:
       raise NameError('Event {} not found in {}'.format(name, events.keys()))

@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>sprockets.stl.traverse.Context</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="sprockets-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="sprockets-module.html">Package&nbsp;sprockets</a> ::
+        <a href="sprockets.stl-module.html">Package&nbsp;stl</a> ::
+        <a href="sprockets.stl.traverse-module.html">Module&nbsp;traverse</a> ::
+        Class&nbsp;Context
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="sprockets.stl.traverse.Context-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Context</h1><p class="nomargin-top"><span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">Context</strong>
+</pre>
+
+<hr />
+<pre class="literalblock">
+Context object for running the Hungarian algorithm.
+
+Contains algorithm variables.
+
+Attributes:
+  g: The complete bipartite graph we will find a maximum matching for.
+  left: The set of left nodes.
+  right: The set of right nodes.
+  labels: Dictionary of vertex names to numeric algorithm label.
+  num_matched: Current number of matched edges
+  s: Set of left nodes in the augmenting tree
+  t: Set of right nodes in the augmenting tree
+  matches: Dictionary where matches[n] = m (and matches[m] = n) if n and m are
+      currently matched.
+  slack: Dictionary keyed on y, where slack[y] = min(for x in S: labels[x] +
+      labels[y] - weight(x, y))
+  slackx: Dictionary keyed on y, where slackx[y] is the node in right which
+      gives y its current slack value.
+  prev: Dictionary keyed on a node x in S, where prev[x] is the previous node
+      in S along x's path in the augmenting tree.
+
+</pre>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sprockets.stl.traverse.Context-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sprockets.stl.traverse.Context-class.html#MaxBipartiteMatching" class="summary-sig-name">MaxBipartiteMatching</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">graph</span>)</span><br />
+      Find a maximum matching for a bipartite graph.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context.MaxBipartiteMatching">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sprockets.stl.traverse.Context-class.html#_Augment" class="summary-sig-name" onclick="show_private();">_Augment</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Find an augmenting path starting from an unmatched node in |left|.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._Augment">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sprockets.stl.traverse.Context-class.html#_FindAugmentingPath" class="summary-sig-name" onclick="show_private();">_FindAugmentingPath</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">queue</span>)</span><br />
+      Find an augmenting path for the current labeling.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._FindAugmentingPath">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sprockets.stl.traverse.Context-class.html#_FindAugmentingEdge" class="summary-sig-name" onclick="show_private();">_FindAugmentingEdge</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">queue</span>)</span><br />
+      Find a final edge for an augmenting path after updating labels.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._FindAugmentingEdge">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_InvertPath"></a><span class="summary-sig-name">_InvertPath</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">y</span>)</span><br />
+      Invert the augmenting path whose final edge is (x, y).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._InvertPath">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sprockets.stl.traverse.Context-class.html#_UpdateLabels" class="summary-sig-name" onclick="show_private();">_UpdateLabels</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Update labels to expand the equality subgraph.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._UpdateLabels">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sprockets.stl.traverse.Context-class.html#_AddToTree" class="summary-sig-name" onclick="show_private();">_AddToTree</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">prevx</span>)</span><br />
+      Adds |x| to the current augmenting tree.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._AddToTree">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_InEqualitySubgraph"></a><span class="summary-sig-name">_InEqualitySubgraph</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">y</span>)</span><br />
+      Return True if x and y are in the equality subgraph.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._InEqualitySubgraph">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_CalcSlack"></a><span class="summary-sig-name">_CalcSlack</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">y</span>)</span><br />
+      Calculate the slack for an edge (x, y).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._CalcSlack">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="MaxBipartiteMatching"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">MaxBipartiteMatching</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">graph</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context.MaxBipartiteMatching">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Find a maximum matching for a bipartite graph.
+
+This is O(n^3) implementation of the Hungarian method for complete bipartite
+matching problems.
+
+Args:
+  graph: A networkx graph object, assumed to be bipartite.
+Returns:
+  A dictionary keyed on node names in left to node names in right.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_Augment"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_Augment</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._Augment">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Find an augmenting path starting from an unmatched node in |left|.</p>
+  <p>Start with a root node in |left| and attempt to find an augmenting 
+  path starting from |root|. In order for a path to be augmenting, each 
+  edge in the path must have: weight(x, y) == labels[x] + labels[y]. The 
+  set of all edges which have this property is known as the &quot;equality 
+  subgraph&quot; for the current vertex labeling.</p>
+  <p>In addition, an augmenting path must start with an unmatched edge and 
+  end with an unmatched edge; augmenting the path flips the matched-ness of
+  each edge, so that the total number of matched edges increases by 1.</p>
+  <p>If an augmenting path does not exist, we update the labels of all 
+  nodes in S and T to force new edges into the equality subgraph. 
+  Eventually, an augmenting path will be generated this way.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_FindAugmentingPath"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_FindAugmentingPath</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">queue</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._FindAugmentingPath">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Find an augmenting path for the current labeling.
+
+Perform a BFS to find an augmenting path for the current labeling.
+
+Args:
+  queue: Queue for performing BFS traversal.
+Returns:
+  found: True if path was found.
+  x: Left vertex of final path edge.
+  y: Right vertex of final path edge.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_FindAugmentingEdge"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_FindAugmentingEdge</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">queue</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._FindAugmentingEdge">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Find a final edge for an augmenting path after updating labels.
+
+At least one new edge should have been added to the equality subgraph, so
+we check if any new edges will create an augmenting path.
+
+Args:
+  queue: Queue for performing BFS traversal.
+Returns:
+  found: True if path was found.
+  x: Left vertex of final path edge.
+  y: Right vertex of final path edge.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_UpdateLabels"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_UpdateLabels</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._UpdateLabels">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Update labels to expand the equality subgraph.</p>
+  <p>We will find the smallest slack value of a vertex in Right - T. The 
+  labels for vertices in S will decrease by slack, while the vertices in T 
+  increase by slack. This guarantees at least one vertex in Right will have
+  a slack value of 0, thereby adding it to the equality subgraph.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_AddToTree"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_AddToTree</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">x</span>,
+        <span class="sig-arg">prevx</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sprockets.stl.traverse-pysrc.html#Context._AddToTree">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Adds |x| to the current augmenting tree.
+
+x is a node which has already been matched to a node y in Right (which is
+itself connected to prevx via a non-matching edge in the equality subgraph).
+We indicate prevx comes before x in the tree so we can trace the path later.
+
+Args:
+  x: Node which has already been matched to a node y in right
+  prevx: Previous node in Left along the path.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="sprockets-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Feb 27 16:17:07 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

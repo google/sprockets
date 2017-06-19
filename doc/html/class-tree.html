@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class Hierarchy</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="sprockets-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Trees&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">&nbsp;</td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="class-tree.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<center><b>
+ [ <a href="module-tree.html">Module Hierarchy</a>
+ | <a href="class-tree.html">Class Hierarchy</a> ]
+</b></center><br />
+<h1 class="epydoc">Class Hierarchy</h1>
+<ul class="nomargin-top">
+    <li> <strong class="uidlink">object</strong>:
+      <em class="summary">The most base type</em>
+    <ul>
+    <li> <strong class="uidlink">exceptions.BaseException</strong>:
+      <em class="summary">Common base class for all exceptions</em>
+    <ul>
+    <li> <strong class="uidlink">exceptions.Exception</strong>:
+      <em class="summary">Common base class for all non-exit exceptions.</em>
+    <ul>
+    <li> <strong class="uidlink">exceptions.StandardError</strong>:
+      <em class="summary">Base class for all standard Python exceptions that do not represent
+        interpreter exiting.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="exceptions.AssertionError-class.html">exceptions.AssertionError</a></strong>:
+      <em class="summary">Assertion failed.</em>
+    </li>
+    <li> <strong class="uidlink">exceptions.SyntaxError</strong>:
+      <em class="summary">Invalid syntax.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.parser.StlSyntaxError-class.html">sprockets.stl.parser.StlSyntaxError</a></strong>:
+      <em class="summary">Error for incorrect STL syntax.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.traverse.Context-class.html">sprockets.stl.traverse.Context</a></strong>:
+      <em class="summary">Context object for running the Hungarian algorithm.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.FuncWithContext.Context-class.html">sprockets.stl.base.FuncWithContext.Context</a></strong>:
+      <em class="summary">Context to run a function as an event in state transition spec.</em>
+    </li>
+    <li> <strong class="uidlink">stl.lib.Encoding</strong>:
+      <em class="summary">Library class for implementing custom message encodings.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.example.example_lib.KeyValueEncoding-class.html">sprockets.example.example_lib.KeyValueEncoding</a></strong>:
+      <em class="summary">Key/Value pair encoding.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.Encoding-class.html">sprockets.stl.lib.Encoding</a></strong>:
+      <em class="summary">Library class for implementing custom message encodings.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.JsonEncoding-class.html">sprockets.stl.lib.JsonEncoding</a></strong>:
+      <em class="summary">Encodes and decodes JSON messages.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.ProtobufBase64Encoding-class.html">sprockets.stl.lib.ProtobufBase64Encoding</a></strong>:
+      <em class="summary">Wraps protobuf-encoded messages with base64.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.ProtobufEncoding-class.html">sprockets.stl.lib.ProtobufEncoding</a></strong>:
+      <em class="summary">Encodes and decodes protobuf messages.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.Event-class.html">sprockets.stl.lib.Event</a></strong>:
+      <em class="summary">Library class for implementing external events.</em>
+    </li>
+    <li> <strong class="uidlink">stl.lib.Event</strong>:
+      <em class="summary">Library class for implementing external events.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.example.noop.LogEncodedParams-class.html">sprockets.example.noop.LogEncodedParams</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.example.noop.LogParams-class.html">sprockets.example.noop.LogParams</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.example.noop.NoOp-class.html">sprockets.example.noop.NoOp</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.example.noop.Sleep-class.html">sprockets.example.noop.Sleep</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink">stl.base.NamedObject</strong>:
+      <em class="summary">Base class for all objects with a name.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.event.EventInTransition-class.html">sprockets.stl.event.EventInTransition</a></strong>:
+      <em class="summary">Event instance defined in a state transition spec.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.message.Message-class.html">sprockets.stl.message.Message</a></strong>:
+      <em class="summary">Protocol specifications.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.message.MessageFromExternal-class.html">sprockets.stl.message.MessageFromExternal</a></strong>:
+      <em class="summary">A protocol specification external.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.message.MessageValue-class.html">sprockets.stl.message.MessageValue</a></strong>:
+      <em class="summary">Message instances.</em>
+    </li>
+    <li> <strong class="uidlink">stl.base.ParameterizedObject</strong>:
+      <em class="summary">Base class of objects which has parameters.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.event.Event-class.html">sprockets.stl.event.Event</a></strong>:
+      <em class="summary">User defined events.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.event.EventFromExternal-class.html">sprockets.stl.event.EventFromExternal</a></strong>:
+      <em class="summary">An external event (i.e.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.qualifier.Qualifier-class.html">sprockets.stl.qualifier.Qualifier</a></strong>:
+      <em class="summary">Field qualifier for messages.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.qualifier.QualifierFromExternal-class.html">sprockets.stl.qualifier.QualifierFromExternal</a></strong>:
+      <em class="summary">Wraps an external qualifier defined in a python file.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.state.State-class.html">sprockets.stl.state.State</a></strong>:
+      <em class="summary">States.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.state.StateResolved-class.html">sprockets.stl.state.StateResolved</a></strong>:
+      <em class="summary">State specified in trasition spec and resolved.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.state.Transition-class.html">sprockets.stl.state.Transition</a></strong>:
+      <em class="summary">State transition spec.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.state.StateValue-class.html">sprockets.stl.state.StateValue</a></strong>:
+      <em class="summary">State instance with value representing current state.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.state.StateValueInTransition-class.html">sprockets.stl.state.StateValueInTransition</a></strong>:
+      <em class="summary">State instance defined in a state transition spec.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.NamedObject-class.html">sprockets.stl.base.NamedObject</a></strong>:
+      <em class="summary">Base class for all objects with a name.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.Expand-class.html">sprockets.stl.base.Expand</a></strong>:
+      <em class="summary">Expressions to expand to other objects.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.Func-class.html">sprockets.stl.base.Func</a></strong>:
+      <em class="summary">External function call.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.FuncGetField-class.html">sprockets.stl.base.FuncGetField</a></strong>:
+      <em class="summary">External function to get the value of a field either of Role or dictionary.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.FuncNoOp-class.html">sprockets.stl.base.FuncNoOp</a></strong>:
+      <em class="summary">External function doing nothing.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.FuncSet-class.html">sprockets.stl.base.FuncSet</a></strong>:
+      <em class="summary">External function to set a value to a field of Role or to a LocalVar.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.FuncWithContext-class.html">sprockets.stl.base.FuncWithContext</a></strong>:
+      <em class="summary">External event function with context.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.ParameterizedObject-class.html">sprockets.stl.base.ParameterizedObject</a></strong>:
+      <em class="summary">Base class of objects which has parameters.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.Role-class.html">sprockets.stl.base.Role</a></strong>:
+      <em class="summary">Roles.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.TypedObject-class.html">sprockets.stl.base.TypedObject</a></strong>:
+      <em class="summary">Base class for all object with a type and name.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.Const-class.html">sprockets.stl.base.Const</a></strong>:
+      <em class="summary">Constants.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.Field-class.html">sprockets.stl.base.Field</a></strong>:
+      <em class="summary">Fields in messages or in roles.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.LocalVar-class.html">sprockets.stl.base.LocalVar</a></strong>:
+      <em class="summary">Local variables.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.Param-class.html">sprockets.stl.base.Param</a></strong>:
+      <em class="summary">Parameters for ParameterizedObject.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.Value-class.html">sprockets.stl.base.Value</a></strong>:
+      <em class="summary">Values.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.QualifierValue-class.html">sprockets.stl.base.QualifierValue</a></strong>:
+      <em class="summary">Value from a Qualifier.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base.QualifierValue.Resolved-class.html">sprockets.stl.base.QualifierValue.Resolved</a></strong>:
+      <em class="summary">Resolved value from a QualifierValue.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.Qualifier-class.html">sprockets.stl.lib.Qualifier</a></strong>:
+      <em class="summary">Library class for defining external qualifiers.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.AnyOf-class.html">sprockets.stl.lib.AnyOf</a></strong>:
+      <em class="summary">Qualify a value matching a set of possible values.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.DifferentFrom-class.html">sprockets.stl.lib.DifferentFrom</a></strong>:
+      <em class="summary">Qualify a string which is different from the previous one.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.RandomBool-class.html">sprockets.stl.lib.RandomBool</a></strong>:
+      <em class="summary">Qualify random boolean values.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.RandomString-class.html">sprockets.stl.lib.RandomString</a></strong>:
+      <em class="summary">Qualify random strings.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.UniqueInt-class.html">sprockets.stl.lib.UniqueInt</a></strong>:
+      <em class="summary">&quot;Qualify integers which are always unique.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.lib.UniqueString-class.html">sprockets.stl.lib.UniqueString</a></strong>:
+      <em class="summary">&quot;Qualify strings which are always unique.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.graph.StateVertex-class.html">sprockets.stl.graph.StateVertex</a></strong>:
+      <em class="summary">A vertex in state transition graph.</em>
+    </li>
+    <li> <strong class="uidlink">unittest.case.TestCase</strong>:
+      <em class="summary">A class whose instances are single test cases.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="sprockets.stl.base_test.BaseTest-class.html">sprockets.stl.base_test.BaseTest</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.example.example_test.KeyValueEncodingTestCase-class.html">sprockets.example.example_test.KeyValueEncodingTestCase</a></strong>:
+      <em class="summary">Test KeyValueEncoding serialization and parsing.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.message_test.MessageTest-class.html">sprockets.stl.message_test.MessageTest</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.state_test.StateTest-class.html">sprockets.stl.state_test.StateTest</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.parser_test.StlParserTest-class.html">sprockets.stl.parser_test.StlParserTest</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sprockets.stl.graph.TransitionEdge-class.html">sprockets.stl.graph.TransitionEdge</a></strong>:
+      <em class="summary">An edge of 2 graph.StateVertex's in state transition graph.</em>
+    </li>
+    <li> <strong class="uidlink">type</strong>:
+      <em class="summary">type(object) -&gt; the object's type type(name, bases, dict) -&gt; 
+        a new type</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="abc.ABCMeta-class.html">abc.ABCMeta</a></strong>:
+      <em class="summary">Metaclass for defining Abstract Base Classes (ABCs).</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+</ul>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="sprockets-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Trees&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Feb 27 16:17:07 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

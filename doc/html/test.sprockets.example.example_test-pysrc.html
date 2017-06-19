@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>test.sprockets.example.example_test</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="test.sprockets-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;test ::
+        <a href="test.sprockets-module.html">Package&nbsp;sprockets</a> ::
+        <a href="test.sprockets.example-module.html">Package&nbsp;example</a> ::
+        Module&nbsp;example_test
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="test.sprockets.example.example_test-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="test.sprockets.example.example_test-module.html">Module test.sprockets.example.example_test</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/env python</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"># Copyright 2016 Google Inc. All rights reserved.</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-comment"># Licensed under the Apache License, Version 2.0 (the "License");</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-comment"># you may not use this file except in compliance with the License.</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-comment"># You may obtain a copy of the License at</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-comment">#     http://www.apache.org/licenses/LICENSE-2.0</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-comment"># Unless required by applicable law or agreed to in writing, software</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-comment"># distributed under the License is distributed on an "AS IS" BASIS,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-comment"># See the License for the specific language governing permissions and</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-comment"># limitations under the License.</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-docstring">"""Tests for example user-defined encoding scheme."""</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">unittest</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Package test.sprockets.stl=test.sprockets.stl-module.html"><a title="test.sprockets.stl" class="py-name" href="#" onclick="return doclink('link-0', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module test.sprockets.stl.base=test.sprockets.stl.base-module.html"><a title="test.sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-1', 'base', 'link-1');">base</a></tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-2" class="py-name"><a title="test.sprockets.stl" class="py-name" href="#" onclick="return doclink('link-2', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module test.sprockets.stl.message=test.sprockets.stl.message-module.html"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-3', 'message', 'link-3');">message</a></tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"> </tt>
+<a name="KeyValueEncodingTestCase"></a><div id="KeyValueEncodingTestCase-def"><a name="L23"></a><tt class="py-lineno">23</tt> <a class="py-toggle" href="#" id="KeyValueEncodingTestCase-toggle" onclick="return toggle('KeyValueEncodingTestCase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="test.sprockets.example.example_test.KeyValueEncodingTestCase-class.html">KeyValueEncodingTestCase</a><tt class="py-op">(</tt><tt class="py-base-class">unittest</tt><tt class="py-op">.</tt><tt class="py-base-class">TestCase</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="KeyValueEncodingTestCase-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="KeyValueEncodingTestCase-expanded"><a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">  <tt class="py-docstring">"""Test KeyValueEncoding serialization and parsing."""</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"> </tt>
+<a name="KeyValueEncodingTestCase.testSerializeToString"></a><div id="KeyValueEncodingTestCase.testSerializeToString-def"><a name="L26"></a><tt class="py-lineno">26</tt> <a class="py-toggle" href="#" id="KeyValueEncodingTestCase.testSerializeToString-toggle" onclick="return toggle('KeyValueEncodingTestCase.testSerializeToString');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="test.sprockets.example.example_test.KeyValueEncodingTestCase-class.html#testSerializeToString">testSerializeToString</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="KeyValueEncodingTestCase.testSerializeToString-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="KeyValueEncodingTestCase.testSerializeToString-expanded"><a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">    <tt id="link-4" class="py-name"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-4', 'message', 'link-3');">message</a></tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name"><a title="test.sprockets.stl" class="py-name" href="#" onclick="return doclink('link-5', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-6', 'message', 'link-3');">message</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Class test.sprockets.stl.message.Message=test.sprockets.stl.message.Message-class.html"><a title="test.sprockets.stl.message.Message" class="py-name" href="#" onclick="return doclink('link-7', 'Message', 'link-7');">Message</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-string">'mMessage'</tt><tt class="py-op">,</tt> <tt class="py-string">'example_lib.KeyValueEncoding'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt class="py-name">field1</tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name"><a title="test.sprockets.stl" class="py-name" href="#" onclick="return doclink('link-8', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="test.sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-9', 'base', 'link-1');">base</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Class test.sprockets.stl.base.Field=test.sprockets.stl.base.Field-class.html"><a title="test.sprockets.stl.base.Field" class="py-name" href="#" onclick="return doclink('link-10', 'Field', 'link-10');">Field</a></tt><tt class="py-op">(</tt><tt class="py-string">'request_id'</tt><tt class="py-op">,</tt> <tt class="py-string">'int'</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">    <tt class="py-name">field1</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'ord'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">    <tt class="py-name">field1</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'key'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'ri'</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">    <tt class="py-name">field2</tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="test.sprockets.stl" class="py-name" href="#" onclick="return doclink('link-11', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="test.sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-12', 'base', 'link-1');">base</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="test.sprockets.stl.base.Field" class="py-name" href="#" onclick="return doclink('link-13', 'Field', 'link-10');">Field</a></tt><tt class="py-op">(</tt><tt class="py-string">'data'</tt><tt class="py-op">,</tt> <tt class="py-string">'string'</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">    <tt class="py-name">field2</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'ord'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">    <tt class="py-name">field2</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'key'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'da'</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">    <tt class="py-name">field3</tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name"><a title="test.sprockets.stl" class="py-name" href="#" onclick="return doclink('link-14', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="test.sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-15', 'base', 'link-1');">base</a></tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="test.sprockets.stl.base.Field" class="py-name" href="#" onclick="return doclink('link-16', 'Field', 'link-10');">Field</a></tt><tt class="py-op">(</tt><tt class="py-string">'broadcast'</tt><tt class="py-op">,</tt> <tt class="py-string">'bool'</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">    <tt class="py-name">field3</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'ord'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">2</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">    <tt class="py-name">field3</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'key'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'br'</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">    <tt id="link-17" class="py-name"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-17', 'message', 'link-3');">message</a></tt><tt class="py-op">.</tt><tt class="py-name">fields</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">field1</tt><tt class="py-op">,</tt> <tt class="py-name">field2</tt><tt class="py-op">,</tt> <tt class="py-name">field3</tt><tt class="py-op">]</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">    <tt class="py-name">values</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'request_id'</tt><tt class="py-op">:</tt> <tt class="py-number">10</tt><tt class="py-op">,</tt> <tt class="py-string">'data'</tt><tt class="py-op">:</tt> <tt class="py-string">'dummy_data'</tt><tt class="py-op">,</tt> <tt class="py-string">'broadcast'</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt><tt class="py-op">}</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">    <tt class="py-name">serialized</tt> <tt class="py-op">=</tt> <tt id="link-18" class="py-name"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-18', 'message', 'link-3');">message</a></tt><tt class="py-op">.</tt><tt class="py-name">encoding</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method test.sprockets.example.example_lib.KeyValueEncoding.SerializeToString()=test.sprockets.example.example_lib.KeyValueEncoding-class.html#SerializeToString,Method test.sprockets.example.proto.example_pb2.SimpleMsg.SerializeToString()=test.sprockets.example.proto.example_pb2.SimpleMsg-class.html#SerializeToString,Method test.sprockets.stl.lib.Encoding.SerializeToString()=test.sprockets.stl.lib.Encoding-class.html#SerializeToString,Method test.sprockets.stl.lib.JsonEncoding.SerializeToString()=test.sprockets.stl.lib.JsonEncoding-class.html#SerializeToString,Method test.sprockets.stl.lib.ProtobufBase64Encoding.SerializeToString()=test.sprockets.stl.lib.ProtobufBase64Encoding-class.html#SerializeToString,Method test.sprockets.stl.lib.ProtobufEncoding.SerializeToString()=test.sprockets.stl.lib.ProtobufEncoding-class.html#SerializeToString,Method test.sprockets.stl.parser_test_proto_pb2.SimpleMsg.SerializeToString()=test.sprockets.stl.parser_test_proto_pb2.SimpleMsg-class.html#SerializeToString"><a title="test.sprockets.example.example_lib.KeyValueEncoding.SerializeToString
+test.sprockets.example.proto.example_pb2.SimpleMsg.SerializeToString
+test.sprockets.stl.lib.Encoding.SerializeToString
+test.sprockets.stl.lib.JsonEncoding.SerializeToString
+test.sprockets.stl.lib.ProtobufBase64Encoding.SerializeToString
+test.sprockets.stl.lib.ProtobufEncoding.SerializeToString
+test.sprockets.stl.parser_test_proto_pb2.SimpleMsg.SerializeToString" class="py-name" href="#" onclick="return doclink('link-19', 'SerializeToString', 'link-19');">SerializeToString</a></tt><tt class="py-op">(</tt><tt class="py-name">values</tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-20', 'message', 'link-3');">message</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEquals</tt><tt class="py-op">(</tt><tt class="py-string">'ri=10,da=dummy_data,br=True'</tt><tt class="py-op">,</tt> <tt class="py-name">serialized</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"> </tt>
+<a name="KeyValueEncodingTestCase.testParseFromString"></a><div id="KeyValueEncodingTestCase.testParseFromString-def"><a name="L44"></a><tt class="py-lineno">44</tt> <a class="py-toggle" href="#" id="KeyValueEncodingTestCase.testParseFromString-toggle" onclick="return toggle('KeyValueEncodingTestCase.testParseFromString');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="test.sprockets.example.example_test.KeyValueEncodingTestCase-class.html#testParseFromString">testParseFromString</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="KeyValueEncodingTestCase.testParseFromString-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="KeyValueEncodingTestCase.testParseFromString-expanded"><a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">    <tt id="link-21" class="py-name"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-21', 'message', 'link-3');">message</a></tt> <tt class="py-op">=</tt> <tt id="link-22" class="py-name"><a title="test.sprockets.stl" class="py-name" href="#" onclick="return doclink('link-22', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-23', 'message', 'link-3');">message</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="test.sprockets.stl.message.Message" class="py-name" href="#" onclick="return doclink('link-24', 'Message', 'link-7');">Message</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt class="py-string">'mMessage'</tt><tt class="py-op">,</tt> <tt class="py-string">'example_lib.KeyValueEncoding'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">    <tt class="py-name">field1</tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="test.sprockets.stl" class="py-name" href="#" onclick="return doclink('link-25', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="test.sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-26', 'base', 'link-1');">base</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="test.sprockets.stl.base.Field" class="py-name" href="#" onclick="return doclink('link-27', 'Field', 'link-10');">Field</a></tt><tt class="py-op">(</tt><tt class="py-string">'request_id'</tt><tt class="py-op">,</tt> <tt class="py-string">'int'</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">    <tt class="py-name">field1</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'ord'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">    <tt class="py-name">field1</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'key'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'ri'</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">    <tt class="py-name">field2</tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="test.sprockets.stl" class="py-name" href="#" onclick="return doclink('link-28', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="test.sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-29', 'base', 'link-1');">base</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="test.sprockets.stl.base.Field" class="py-name" href="#" onclick="return doclink('link-30', 'Field', 'link-10');">Field</a></tt><tt class="py-op">(</tt><tt class="py-string">'data'</tt><tt class="py-op">,</tt> <tt class="py-string">'string'</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">    <tt class="py-name">field2</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'ord'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">    <tt class="py-name">field2</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'key'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'da'</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">    <tt class="py-name">field3</tt> <tt class="py-op">=</tt> <tt id="link-31" class="py-name"><a title="test.sprockets.stl" class="py-name" href="#" onclick="return doclink('link-31', 'stl', 'link-0');">stl</a></tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="test.sprockets.stl.base" class="py-name" href="#" onclick="return doclink('link-32', 'base', 'link-1');">base</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="test.sprockets.stl.base.Field" class="py-name" href="#" onclick="return doclink('link-33', 'Field', 'link-10');">Field</a></tt><tt class="py-op">(</tt><tt class="py-string">'broadcast'</tt><tt class="py-op">,</tt> <tt class="py-string">'bool'</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">    <tt class="py-name">field3</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'ord'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">2</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">    <tt class="py-name">field3</tt><tt class="py-op">.</tt><tt class="py-name">encoding_props</tt><tt class="py-op">[</tt><tt class="py-string">'key'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'br'</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">    <tt id="link-34" class="py-name"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-34', 'message', 'link-3');">message</a></tt><tt class="py-op">.</tt><tt class="py-name">fields</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">field1</tt><tt class="py-op">,</tt> <tt class="py-name">field2</tt><tt class="py-op">,</tt> <tt class="py-name">field3</tt><tt class="py-op">]</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">    <tt class="py-name">encoded</tt> <tt class="py-op">=</tt> <tt class="py-string">'ri=10,da=dummy_data,br=True'</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">    <tt class="py-name">decoded</tt> <tt class="py-op">=</tt> <tt id="link-35" class="py-name"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-35', 'message', 'link-3');">message</a></tt><tt class="py-op">.</tt><tt class="py-name">encoding</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method test.sprockets.example.example_lib.KeyValueEncoding.ParseFromString()=test.sprockets.example.example_lib.KeyValueEncoding-class.html#ParseFromString,Method test.sprockets.stl.lib.Encoding.ParseFromString()=test.sprockets.stl.lib.Encoding-class.html#ParseFromString,Method test.sprockets.stl.lib.JsonEncoding.ParseFromString()=test.sprockets.stl.lib.JsonEncoding-class.html#ParseFromString,Method test.sprockets.stl.lib.ProtobufBase64Encoding.ParseFromString()=test.sprockets.stl.lib.ProtobufBase64Encoding-class.html#ParseFromString,Method test.sprockets.stl.lib.ProtobufEncoding.ParseFromString()=test.sprockets.stl.lib.ProtobufEncoding-class.html#ParseFromString"><a title="test.sprockets.example.example_lib.KeyValueEncoding.ParseFromString
+test.sprockets.stl.lib.Encoding.ParseFromString
+test.sprockets.stl.lib.JsonEncoding.ParseFromString
+test.sprockets.stl.lib.ProtobufBase64Encoding.ParseFromString
+test.sprockets.stl.lib.ProtobufEncoding.ParseFromString" class="py-name" href="#" onclick="return doclink('link-36', 'ParseFromString', 'link-36');">ParseFromString</a></tt><tt class="py-op">(</tt><tt class="py-name">encoded</tt><tt class="py-op">,</tt> <tt id="link-37" class="py-name"><a title="test.sprockets.stl.message" class="py-name" href="#" onclick="return doclink('link-37', 'message', 'link-3');">message</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">    <tt class="py-name">expected</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'request_id'</tt><tt class="py-op">:</tt> <tt class="py-number">10</tt><tt class="py-op">,</tt> <tt class="py-string">'data'</tt><tt class="py-op">:</tt> <tt class="py-string">'dummy_data'</tt><tt class="py-op">,</tt> <tt class="py-string">'broadcast'</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt><tt class="py-op">}</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEquals</tt><tt class="py-op">(</tt><tt class="py-name">expected</tt><tt class="py-op">,</tt> <tt class="py-name">decoded</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line"> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line"> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">  <tt class="py-name">unittest</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Function test.sprockets.stl.parser.main()=test.sprockets.stl.parser-module.html#main"><a title="test.sprockets.stl.parser.main" class="py-name" href="#" onclick="return doclink('link-38', 'main', 'link-38');">main</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="test.sprockets-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Feb 27 15:08:41 2017
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

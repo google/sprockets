@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Defines protocol specifications and messages."""
 
 import importlib
@@ -79,10 +78,10 @@ class Message(stl.base.NamedObject):
   def Resolve(self, env, resolved_fields):
     logging.log(1, 'Resolving ' + self.name)
     msg_value = MessageValue(self.name, self)
-    outer_messages = [env['_current_module']['messages']]
+    outer_messages = [env['_current_module'].messages]
     if self.is_array:
-      msg_value.value_dict_or_array = self.ValidateArray(resolved_fields,
-                                                         outer_messages)
+      msg_value.value_dict_or_array = self.ValidateArray(
+          resolved_fields, outer_messages)
     else:
       msg_value.value_dict_or_array = self.ValidateDict(resolved_fields,
                                                         outer_messages)
