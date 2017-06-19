@@ -293,11 +293,11 @@ class DifferentFrom(Qualifier):
   def __init__(self):
     Qualifier.__init__(self)
 
-  def Validate(self, value, prev):
+  def Validate(self, value, prev):  # pylint: disable=arguments-differ
     # This value must not match the previous one.
     return value != prev
 
-  def Generate(self, prev):
+  def Generate(self, prev):  # pylint: disable=arguments-differ
     rand = random.randint(0, 999999)
     if 'random-%s' % rand == prev:
       rand += 1
