@@ -15,6 +15,8 @@
 
 import logging
 
+# pylint: disable=abstract-method
+
 # python2 and python3 compatible way for detecting if something is a string.
 try:
   basestring  # pylint: disable=pointless-statement
@@ -89,6 +91,9 @@ class ParameterizedObject(NamedObject):
   def __eq__(self, other):
     return NamedObject.__eq__(self, other) and self.params == other.params
 
+  def Resolve(self, env, resolved_params):
+      raise NotImplementedError('Resolved() is not needed: ' + self.name)
+
 
 class TypedObject(NamedObject):
   """Base class for all object with a type and name.
@@ -103,6 +108,9 @@ class TypedObject(NamedObject):
 
   def __eq__(self, other):
     return NamedObject.__eq__(self, other) and self.type_ == other.type_
+
+  def Resolve(self, env, resolved_params):
+      raise NotImplementedError('Resolved() is not needed: ' + self.name)
 
 
 class Const(TypedObject):
@@ -333,6 +341,9 @@ class Param(TypedObject):
   def __str__(self):
     return 'PARAM %s(%s)' % (self.name, self.type_)
 
+  def Resolve(self, env, resolved_params):
+      raise NotImplementedError('Resolved() is not needed: ' + self.name)
+
 
 class LocalVar(TypedObject):
   """Local variables.
@@ -351,6 +362,9 @@ class LocalVar(TypedObject):
 
   def __str__(self):
     return 'LOCAL %s(%s)' % (self.name, self.type_)
+
+  def Resolve(self, env, resolved_params):
+      raise NotImplementedError('Resolved() is not needed: ' + self.name)
 
 
 class Field(TypedObject):
@@ -383,6 +397,9 @@ class Field(TypedObject):
     if self.optional:
       return 'FIELD-OPTIONAL %s(%s)' % (self.name, self.type_)
     return 'FIELD %s(%s)' % (self.name, self.type_)
+
+  def Resolve(self, env, resolved_params):
+      raise NotImplementedError('Resolved() is not needed: ' + self.name)
 
 
 class Role(NamedObject):
@@ -522,6 +539,9 @@ class Func(NamedObject):
       raise RuntimeError('Func does not contain a runnable function.')
     return self.func(*self.args)
 
+  def Resolve(self, env, resolved_params):
+      raise NotImplementedError('Resolved() is not needed: ' + self.name)
+
 
 class FuncNoOp(Func):
   """External function doing nothing."""
@@ -531,6 +551,9 @@ class FuncNoOp(Func):
 
   def Run(self):
     return True
+
+  def Resolve(self, env, resolved_params):
+      raise NotImplementedError('Resolved() is not needed: ' + self.name)
 
 
 class FuncGetField(Func):
@@ -554,6 +577,9 @@ class FuncGetField(Func):
 
   def Run(self):
     return self.obj[self.field]
+
+  def Resolve(self, env, resolved_params):
+      raise NotImplementedError('Resolved() is not needed: ' + self.name)
 
 
 class FuncSet(Func):
@@ -603,6 +629,9 @@ class FuncSet(Func):
     else:
       raise TypeError('Cannot SetValue on type %s' % type(self.obj))
 
+  def Resolve(self, env, resolved_params):
+      raise NotImplementedError('Resolved() is not needed: ' + self.name)
+
 
 class FuncWithContext(Func):
   """External event function with context.
@@ -651,3 +680,6 @@ class FuncWithContext(Func):
     if self.context.test_source:
       return self.event.Wait(*new_args)
     return self.event.Fire(*new_args)
+
+  def Resolve(self, env, resolved_params):
+      raise NotImplementedError('Resolved() is not needed: ' + self.name)
