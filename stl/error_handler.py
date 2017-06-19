@@ -14,8 +14,6 @@
 
 """Module for handling errors from parsing an STL file."""
 
-import collections
-
 import error_formatter
 
 
