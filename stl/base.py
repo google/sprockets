@@ -15,8 +15,6 @@
 
 import logging
 
-# pylint: disable=abstract-method
-
 # python2 and python3 compatible way for detecting if something is a string.
 try:
   basestring  # pylint: disable=pointless-statement

@@ -15,8 +15,6 @@
 
 """Lexing (tokenizing) a state transition (STL) spec."""
 
-# pylint: disable=invalid-name
-# pylint: disable=unused-variable
 
 import logging
 
