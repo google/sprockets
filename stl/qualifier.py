@@ -71,5 +71,6 @@ class QualifierFromExternal(Qualifier):
     return '%s b(%s)' % (Qualifier.__str__(self), self.external_name)
 
   def Resolve(self, env, resolved_params):
+    del env, resolved_params  # Unused.
     logging.log(1, 'Resolving ' + self.name)
     return self.external
