@@ -15,17 +15,12 @@
 
 """Lexing (tokenizing) a state transition (STL) spec."""
 
-# pylint: disable=g-doc-args
-# pylint: disable=g-docstring-missing-newline
-# pylint: disable=g-docstring-quotes
-# pylint: disable=g-no-space-after-docstring-summary
-# pylint: disable=g-short-docstring-punctuation
-# pylint: disable=g-short-docstring-space
 # pylint: disable=invalid-name
 # pylint: disable=unused-variable
 
 import logging
-import ply.lex  # pylint: disable=g-bad-import-order
+
+import ply.lex
 
 
 class StlSyntaxError(SyntaxError):
@@ -136,7 +131,7 @@ class StlLexer(object):
                   t.value[0])
     t.lexer.skip(1)
 
-  def debug(data):
-    """Print out all the tokens in |data|."""
+  def debug(self):
+    """Print out all the tokens from the lexer|."""
     for token in self.lexer.tokens():
       print token
