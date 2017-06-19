@@ -8,7 +8,7 @@ before-install:
 
 install:
   - pip install -r requirements.txt
-  - sudo apt-get install pylint
+  - git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 
 script:
   # Run the unittests
@@ -16,8 +16,8 @@ script:
   - python -m unittest discover --start-directory example/ --pattern "*_test.py"
 
   # Run the linter
-  - PYTHONPATH=.:$PYTHONPATH pylint --rcfile=.pylintrc stl
-  - PYTHONPATH=.:$PYTHONPATH pylint --rcfile=.pylintrc example
+  - depot_tools/pylint stl
+  - depot_tools/pylint example
 
 notification:
   email:
