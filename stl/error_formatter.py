@@ -73,11 +73,11 @@ class Color(object):
     return color + 30
   
   @staticmethod
-    def Background(color):
-      """Converts |color| into its background color code."""
-      if not Color._IsBaseColor(color):
-        raise ValueError('Expected a Color.COLOR constant, found: {}'.format(color))  
-      return color + 40  
+  def Background(color):
+    """Converts |color| into its background color code."""
+    if not Color._IsBaseColor(color):
+      raise ValueError('Expected a Color.COLOR constant, found: {}'.format(color))  
+    return color + 40  
 
 
 class PrettyErrorFormatter(ErrorFormatter):
