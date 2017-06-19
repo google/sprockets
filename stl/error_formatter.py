@@ -15,6 +15,7 @@
 """Module for formatting parser/syntax errors."""
 
 import abc
+import collections
 import json
 import re
 
