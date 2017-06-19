@@ -16,20 +16,7 @@
 
 import collections
 
-
-ErrorInfo = collections.namedtuple('ErrorInfo', ['id', 'filename', 'line', 'position', 'message'])
-# Args:
-#   id: An identifier for the type of error.
-#   filename: Name of the file the error occured in.
-#   line: The text of the line the error occured in.
-#   position: An ErrorPosition pointing to where the error occured.
-#   messasge: The human readable message explaining the error
-
-ErrorPosition = collections.namedtuple('ErrorPosiion', ['line', 'start', 'end'])
-# Args:
-#   line: The line number of the error.
-#   start: The position (column) the error starts at in the line (inclusive).
-#   end: The position (column) the error ends at in the line (inclusive).
+import error_formatter
 
 
 class ParserErrorHandler(object):
@@ -77,13 +64,13 @@ class ParserErrorHandler(object):
     final_token = parser.symstack[-1]
     error_start_column = self._GetColumn(lexer.lexdata, final_token) - 1
     error_end_column = error_start_column + len(final_token.value) - 1
-    error_position = ErrorPosition(line=lexer.lineno,
-                                   start=error_start_column,
-                                   end=error_end_column)
-    error = ErrorInfo(
+    error_position = error_formatter.ErrorPosition(line=lexer.lineno,
+                                                   start=error_start_column,
+                                                   end=error_end_column)
+    error = error_formatter.ErrorInfo(
         id=0,
         filename=filename,
         line=self._GetLine(lexer.lexdata, final_token),
         position=error_position,
         message='There was a parsing error :(')
-    return self.format(error)
+    return self.Format(error)
