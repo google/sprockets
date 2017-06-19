@@ -19,13 +19,28 @@ import json
 import re
 
 
+ErrorInfo = collections.namedtuple('ErrorInfo', ['id', 'filename', 'line', 'position', 'message'])
+# Args:
+#   id: An identifier for the type of error.
+#   filename: Name of the file the error occured in.
+#   line: The text of the line the error occured in.
+#   position: An ErrorPosition pointing to where the error occured.
+#   messasge: The human readable message explaining the error
+
+ErrorPosition = collections.namedtuple('ErrorPosiion', ['line', 'start', 'end'])
+# Args:
+#   line: The line number of the error.
+#   start: The position (column) the error starts at in the line (inclusive).
+#   end: The position (column) the error ends at in the line (inclusive).
+
+
 class ErrorFormatter(object):
   """Interface for displaying STL parsing errors."""
   __metaclass__ = abc.ABCMeta
 
   @abc.abstractmethod
   def Format(self, error):
-    """Outputs error_handler.ErrorInfo |error| in a custom format."""
+    """Outputs an ErrorInfo |error| in a custom format."""
     pass
 
 
