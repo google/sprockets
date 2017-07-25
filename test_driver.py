@@ -50,6 +50,10 @@ def ParseArgs():
       '--debug',
       help='Increase logging verbosity to debug level.',
       action='store_true')
+  parser.add_argument(
+      '-g',
+      '--graph',
+      help='Continuously draw the state graph image to the specified file.')
 
   return parser.parse_args()
 
@@ -61,15 +65,13 @@ def AddManifestRootToPath(manifest_filename):
   logging.debug('Appended %s to the sys.path.', manifest_root)
 
 
-def LoadManifest(manifest_filename, manifest_args):
+def LoadManifest(manifest_filename, manifest_arg_dict):
   """Loads the manifest, replacing any specified manifest args."""
   with open(manifest_filename) as manifest_file:
     manifest = manifest_file.read()
-    if manifest_args:
-      for arg in manifest_args:
-        key, value = arg.split('=', 1)
-        logging.debug('Replacing $%s with %s', key, value)
-        manifest = manifest.replace('${}'.format(key), value)
+    for key, value in manifest_arg_dict.iteritems():
+      logging.debug('Replacing $%s with %s', key, value)
+      manifest = manifest.replace('${}'.format(key), value)
 
   logging.debug('Manifest file with subsitutions:\n %s', manifest)
 
@@ -88,6 +90,10 @@ def ParseStl(stl_file, global_env):
 def LoadModules(manifest, test_manifest_filename, global_env):
   """Builds transition graph for each module."""
   global_env = {'modules': {}}
+  manifest_root = os.path.abspath(os.path.dirname(test_manifest_filename))
+  if 'import_paths' in manifest:
+    for f in manifest['import_paths']:
+      sys.path.append(os.path.join(manifest_root, f))
   if 'stl_files' in manifest:
     for f in manifest['stl_files']:
       f = os.path.join(os.path.dirname(test_manifest_filename), f)
@@ -185,18 +191,48 @@ def InitializeStates(transitions):
   return states
 
 
-def TraverseGraph(transitions, states):
+class Visualizer(object):
+
+  def __init__(self, transition_graph, graph_file=None):
+    self.graph_file = graph_file
+    self.a_graph = nx.nx_agraph.to_agraph(transition_graph)
+    self.a_graph.layout(prog='dot')
+    for node in self.a_graph.nodes():
+      node.attr['style'] = 'filled'
+      node.attr['fillcolor'] = 'grey'
+    if self.graph_file:
+      self.a_graph.draw(self.graph_file)
+
+  def TransitionRunning(self, edge):
+    # |edge| is a 3-tuple (source_name, target_name, edge_index). Since we're
+    # traversing a multi-graph, there can be multiple edges between the same
+    # pair of vertices, so |edge_index| specifies which edge we should color
+    # among the collection of edges from |source_name| to |target_name|.
+    self.a_graph.get_edge(edge[0], edge[1], key=edge[2]).attr['color'] = 'green'
+    self.a_graph.draw(self.graph_file)
+
+  def TransitionPassed(self, edge):
+    self.a_graph.get_node(edge[0]).attr['fillcolor'] = 'grey'
+    self.a_graph.get_node(edge[1]).attr['fillcolor'] = 'green'
+    self.a_graph.get_edge(edge[0], edge[1], key=edge[2]).attr['color'] = 'blue'
+    self.a_graph.draw(self.graph_file)
+
+  def TransitionFailed(self, edge, error_vertex_id):
+    self.a_graph.get_node(edge[0]).attr['fillcolor'] = 'grey'
+    self.a_graph.get_edge(edge[0], edge[1], key=edge[2]).attr['color'] = 'red'
+    self.a_graph.get_node(error_vertex_id).attr['fillcolor'] = 'green'
+    self.a_graph.draw(self.graph_file)
+
+
+def TraverseGraph(transitions, states, args=None):
   """Does that actual graph traversal, going through all transisitons."""
   transition_graph, initial_vertex = stl.graph.BuildTransitionGraph(
       transitions, states)
 
-  # TODO(seantopping): Separate visualization from traversal algorithm.
-  a_graph = nx.nx_agraph.to_agraph(transition_graph)
-  a_graph.layout(prog='dot')
-  for node in a_graph.nodes():
-    node.attr['style'] = 'filled'
-    node.attr['fillcolor'] = 'grey'
-  a_graph.draw('graph.png')
+  graph_file = None
+  if args:
+    graph_file = args.graph
+  visualizer = Visualizer(transition_graph, graph_file)
 
   circuit_stack = stl.traverse.MinEdgeCoverCircuit(transition_graph,
                                                    initial_vertex)
@@ -206,33 +242,21 @@ def TraverseGraph(transitions, states):
   while circuit_stack:
     edge = circuit_stack.pop()
     source, target, edge_i = edge
-    s = a_graph.get_node(source)
-    t = a_graph.get_node(target)
-    e = a_graph.get_edge(source, target, key=edge_i)
-
-    e.attr['color'] = 'green'
-    a_graph.draw('graph.png')
     attr = transition_graph[source][target][edge_i]
     transition = attr['transition']
+    visualizer.TransitionRunning(edge)
     if attr['weight'] != float('inf'):
       logging.info('\033[93m[ RUNNING ]\033[0m: %s', transition.name)
       if transition.Run():
         logging.info('\033[92m[ PASSED ]\033[0m: %s', transition.name)
-        s.attr['fillcolor'] = 'grey'
-        t.attr['fillcolor'] = 'green'
-        e.attr['color'] = 'blue'
-        a_graph.draw('graph.png')
+        visualizer.TransitionPassed(edge)
         continue
       else:
         logging.error('\033[91m[ FAILED ]\033[0m: %s', transition.name)
         success = False
         attr['weight'] = float('inf')
     error_vertex_id = attr['error_vertex_id']
-    error_vertex = a_graph.get_node(error_vertex_id)
-    e.attr['color'] = 'red'
-    s.attr['fillcolor'] = 'grey'
-    error_vertex.attr['fillcolor'] = 'green'
-    a_graph.draw('graph.png')
+    visualizer.TransitionFailed(edge, error_vertex_id)
     new_path = nx.shortest_path(
         transition_graph, error_vertex_id, target, weight='weight')
     path_stack = []
@@ -255,21 +279,13 @@ def TraverseGraph(transitions, states):
   return success
 
 
-def Main():
-  """Test driver main function."""
-  args = ParseArgs()
+def RunTest(manifest_filename, manifest_arg_dict, args=None):
+  AddManifestRootToPath(manifest_filename)
 
-  if args.debug:
-    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-  else:
-    logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-
-  AddManifestRootToPath(args.manifest)
-
-  manifest = LoadManifest(args.manifest, args.manifest_args)
+  manifest = LoadManifest(manifest_filename, manifest_arg_dict)
 
   global_env = {}
-  modules = LoadModules(manifest, args.manifest, global_env)
+  modules = LoadModules(manifest, manifest_filename, global_env)
 
   if 'error' in global_env and global_env['error']:
     return False
@@ -283,8 +299,25 @@ def Main():
 
   states = InitializeStates(transitions)
 
-  success = TraverseGraph(transitions, states)
-  return success
+  return TraverseGraph(transitions, states, args)
+
+
+def Main():
+  """Test driver main function."""
+  args = ParseArgs()
+
+  if args.debug:
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+  else:
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
+  manifest_filename = args.manifest
+  manifest_arg_dict = {}
+  for arg in args.manifest_args:
+    key, value = arg.split('=', 1)
+    manifest_arg_dict[key] = value
+
+  return RunTest(manifest_filename, manifest_arg_dict, args)
 
 
 if __name__ == '__main__':

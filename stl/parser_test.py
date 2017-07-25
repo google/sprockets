@@ -199,7 +199,8 @@ class StlParserTest(unittest.TestCase):
     sWithMultipleParams = stl.state.State('sWithMultipleParams')
     sWithMultipleParams.values = ['kValue1', 'kValue2']
     sWithMultipleParams.params = [
-        stl.base.Param('p1', 'int'), stl.base.Param('p2', 'role'),
+        stl.base.Param('p1', 'int'),
+        stl.base.Param('p2', 'role'),
         stl.base.Param('p3', 'string')
     ]
     self.expected_module.states = {
@@ -230,18 +231,18 @@ class StlParserTest(unittest.TestCase):
     mSimpleJsonMsg = stl.message.Message(
         'mSimpleJsonMsg', 'stl.lib.JsonEncoding', is_array=False)
     mSimpleJsonMsg.fields = [
-        stl.base.Field('msg', 'string'), stl.base.Field(
-            'id', 'int', optional=True), stl.base.Field(
-                'bits', 'bool', repeated=True)
+        stl.base.Field('msg', 'string'),
+        stl.base.Field('id', 'int', optional=True),
+        stl.base.Field('bits', 'bool', repeated=True)
     ]
 
     # See parser_test_proto.proto for the specificiation
     mSimpleProtobufMsg = stl.message.Message(
         'mSimpleProtobufMsg', 'stl.lib.ProtobufEncoding', is_array=False)
     mSimpleProtobufMsg.fields = [
-        stl.base.Field('foo', 'string'), stl.base.Field(
-            'fizz', 'int', optional=True), stl.base.Field(
-                'buzz', 'bool', repeated=True)
+        stl.base.Field('foo', 'string'),
+        stl.base.Field('fizz', 'int', optional=True),
+        stl.base.Field('buzz', 'bool', repeated=True)
     ]
 
     self.expected_module.messages = {
@@ -273,7 +274,8 @@ class StlParserTest(unittest.TestCase):
                   '}')
     mInnerMsg = stl.message.Message('mInnerMsg', None, is_array=False)
     mInnerMsg.fields = [
-        stl.base.Field('in', 'string'), stl.base.Field('k', 'int')
+        stl.base.Field('in', 'string'),
+        stl.base.Field('k', 'int')
     ]
 
     mExtraMsg = stl.message.Message('mExtraMsg', None, is_array=False)
@@ -282,8 +284,8 @@ class StlParserTest(unittest.TestCase):
     mNestedJsonMsg = stl.message.Message(
         'mNestedJsonMsg', 'stl.lib.JsonEncoding', is_array=False)
     mNestedJsonMsg.fields = [
-        stl.base.Field('inner', 'mInnerMsg'), stl.base.Field(
-            'extra', 'mExtraMsg', optional=True)
+        stl.base.Field('inner', 'mInnerMsg'),
+        stl.base.Field('extra', 'mExtraMsg', optional=True)
     ]
     mNestedJsonMsg.messages = {'mInnerMsg': mInnerMsg, 'mExtraMsg': mExtraMsg}
 
@@ -341,7 +343,8 @@ class StlParserTest(unittest.TestCase):
 
     eSimpleEventWithParams = stl.event.Event('eSimpleEventWithParams')
     eSimpleEventWithParams.params = [
-        stl.base.Param('s', 'string'), stl.base.Param('i', 'int')
+        stl.base.Param('s', 'string'),
+        stl.base.Param('i', 'int')
     ]
 
     self.expected_module.events = {
@@ -366,22 +369,26 @@ class StlParserTest(unittest.TestCase):
 
     eEvent = stl.event.Event('eEvent')
     eEvent.params = [
-        stl.base.Param('id', 'int'), stl.base.Param('name', 'string')
+        stl.base.Param('id', 'int'),
+        stl.base.Param('name', 'string')
     ]
     eEvent.expand = stl.base.Expand('BuiltInFunction')
     eEvent.expand.values = [stl.base.Value('$id')]
 
     eSimpleEvent = stl.event.Event('eSimpleEvent')
     eSimpleEvent.params = [
-        stl.base.Param('a', 'int'), stl.base.Param('b', 'int'), stl.base.Param(
-            'c', 'int')
+        stl.base.Param('a', 'int'),
+        stl.base.Param('b', 'int'),
+        stl.base.Param('c', 'int')
     ]
 
     eDerivedFromSimpleEvent = stl.event.Event('eDerivedFromSimpleEvent')
     eDerivedFromSimpleEvent.params = [stl.base.Param('q', 'int')]
     eDerivedFromSimpleEvent.expand = stl.base.Expand('eSimpleEvent')
     eDerivedFromSimpleEvent.expand.values = [
-        stl.base.Value('$q'), stl.base.Value(0), stl.base.Value(27)
+        stl.base.Value('$q'),
+        stl.base.Value(0),
+        stl.base.Value(27)
     ]
 
     self.expected_module.events = {

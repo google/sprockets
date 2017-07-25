@@ -69,7 +69,6 @@ class StlParser(object):
     self.parser.parse(data, lexer=self.lexer.lexer)
     return self._global_env
 
-
   def p_module(self, p):
     """module : module_def defs"""
     del p  # unused argument
@@ -101,19 +100,22 @@ class StlParser(object):
     """const_def : CONST type NAME ';'
                  | CONST type NAME '=' value ';' """
     if self._local_env['_curr_module'].HasDefinition(p[3]):
-      logging.error('[%s:%d] Duplicated const: %s', self._filename, p.lineno(3), p[3])
+      logging.error('[%s:%d] Duplicated const: %s', self._filename,
+                    p.lineno(3), p[3])
       return
     # TODO(byungchul): Type checking
     if len(p) == 5:
       self._local_env['_curr_module'].consts[p[3]] = stl.base.Const(p[3], p[2])
     else:
-      self._local_env['_curr_module'].consts[p[3]] = stl.base.Const(p[3], p[2], p[5])
+      self._local_env['_curr_module'].consts[p[3]] = stl.base.Const(
+          p[3], p[2], p[5])
 
   def p_role_def(self, p):
     """role_def : ROLE NAME '{' '}'
                 | ROLE NAME '{' role_fields '}' """
     if self._local_env['_curr_module'].HasDefinition(p[2]):
-      logging.error('[%s:%d] Duplicated role: %s', self._filename, p.lineno(2), p[2])
+      logging.error('[%s:%d] Duplicated role: %s', self._filename,
+                    p.lineno(2), p[2])
       return
     role = stl.base.Role(p[2])
     if len(p) >= 6:
@@ -145,7 +147,8 @@ class StlParser(object):
     """state_def : STATE NAME params '{' names '}'
                  | STATE NAME params '{' names ',' '}' """
     if self._local_env['_curr_module'].HasDefinition(p[2]):
-      logging.error('[%s:%d] Duplicated state: %s', self._filename, p.lineno(2), p[2])
+      logging.error('[%s:%d] Duplicated state: %s', self._filename,
+                    p.lineno(2), p[2])
       return
     state_ = stl.state.State(p[2])
     state_.params = p[3]
@@ -252,7 +255,8 @@ class StlParser(object):
     assert isinstance(p[1], dict)
     key, val = p[3]
     if key in p[1]:
-      logging.error('[%s:%d] Duplicated key: %s', self._filename, p.lineno(3), key)
+      logging.error('[%s:%d] Duplicated key: %s', self._filename,
+                    p.lineno(3), key)
       return
     p[1][key] = val
     p[0] = p[1]
