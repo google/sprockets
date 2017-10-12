@@ -34,7 +34,7 @@ class StlSyntaxError(SyntaxError):
 
 class StlLexer(object):
 
-  def __init__(self, filename=None, **kwargs):
+  def __init__(self, filename, error_handler, **kwargs):
     """Create a Lex lexer.
 
     To pass this into a Ply Yacc parser, pass it in using the .lexer propert
@@ -44,9 +44,11 @@ class StlLexer(object):
 
     Args:
       filename: The filename string to use in any error messaging.
+      error_handler: A object to handle and lexing errors.
       kwargs: Forwarded to ply.lex.lex.
     """
     self._filename = filename
+    self._error_handler = error_handler
     self.lexer = ply.lex.lex(module=self, **kwargs)
 
   RESERVED = {
@@ -130,11 +132,8 @@ class StlLexer(object):
 
   # Error handling rule.
   def t_error(self, t):
-    logging.error('[%s:%d] Illegal character: %s',
-                  self._filename,
-                  t.lexer.lineno,
-                  t.value[0])
-    t.lexer.skip(1)
+    print self._error_handler.GetError(self._filename, t)
+    raise StlSyntaxError('Error while lexing.')
 
   def debug(data):
     """Print out all the tokens in |data|."""

@@ -59,14 +59,15 @@ class StlParser(object):
     self._filename = filename
     self._global_env = global_env
     self._local_env = {'_curr_module': None}
-    self.lexer = stl.lexer.StlLexer(self._filename)
-    self.parser = ply.yacc.yacc(module=self)
     error_formatter = error_formatter or stl.error_formatter.PrettyErrorFormatter()
-    self.error_handler = stl.error_handler.ParserErrorHandler(error_formatter)
+    self.lexer_error_handler = stl.error_handler.LexerErrorHandler(error_formatter)
+    self.parser_error_handler = stl.error_handler.ParserErrorHandler(error_formatter)
+    self.lexer = stl.lexer.StlLexer(self._filename, self.lexer_error_handler)
+    self.parser = ply.yacc.yacc(module=self)
 
   def parse(self, data):
     """Parses the |data| string and returns an updated global_env."""
-    self.parser.parse(data, lexer=self.lexer.lexer)
+    self.parser.parse(data, lexer=self.lexer.lexer, tracking=True)
     return self._global_env
 
   def p_module(self, p):
@@ -632,7 +633,7 @@ class StlParser(object):
           '[{}] Syntax error: '
           'Reached end of file unexpectantly.'.format(self._filename))
 
-    print self.error_handler.get_error(
+    print self.parser_error_handler.GetError(
         self._filename, self.parser, self.lexer.lexer)
 
     raise StlSyntaxError('[{}:{}] Syntax error at: {}'.format(

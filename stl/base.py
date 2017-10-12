@@ -15,6 +15,8 @@
 
 import logging
 
+import stl.levenshtein
+
 # python2 and python3 compatible way for detecting if something is a string.
 try:
   basestring  # pylint: disable=pointless-statement
@@ -205,7 +207,12 @@ class Value(NamedObject):
       roles = env['_current_module'].roles
       if var in roles:
         return roles[var]
-      raise NameError('Cannot find a const, role or local var: ' + var)
+
+      did_you_mean = stl.levenshtein.closest_candidate(
+          var, consts.keys() + roles.keys() + resolved_params.keys())
+      raise NameError(
+          'Cannot find a const, role or local var: %s. Did you mean %s?' %
+          (var, did_you_mean))
 
     # Set reference
     if self.value.startswith('&'):
@@ -228,7 +235,11 @@ class Value(NamedObject):
       roles = env['_current_module'].roles
       if var in roles:
         return roles[var]
-      raise NameError('Cannot find a local var or role: ' + var)
+
+      did_you_mean = stl.levenshtein.closest_candidate(
+          var, resolved_params.keys() + roles.keys())
+      raise NameError('Cannot find a local var or role: %s. Did you mean %s?' %
+                      var, did_you_mean)
 
     # Literal value (integer, boolean, or string)
     return self.value
@@ -440,9 +451,13 @@ class Role(NamedObject):
       return resolved_role
     # Find role in current module
     roles = env['_current_module'].roles
-    if name not in roles:
-      raise NameError('Cannot find a role: ' + name)
-    return roles[name]
+    if name in roles:
+      return roles[name]
+
+    did_you_mean = stl.levenshtein.closest_candidate(
+        name, resolved_params.keys() + roles.keys())
+    raise NameError('Cannot find a role: %s. Did you mean %s?' %
+                    (name, did_you_mean))
 
 
 class Expand(NamedObject):
@@ -472,7 +487,11 @@ class Expand(NamedObject):
     # separately, for example, by Transition or Event.
     messages = env['_current_module'].messages
     if self.name not in messages:
-      raise NameError('Cannot find a message: ' + self.name)
+      did_you_mean = stl.levenshtein.closest_candidate(
+          self.name, messages.keys())
+      raise NameError('Cannot find a message: %s. Did you mean %s?' %
+                      (self.name, did_you_mean))
+
     msg = messages[self.name]
 
     if msg.is_array:

@@ -20,6 +20,7 @@ from google.protobuf import reflection
 
 import stl.base  # pylint: disable=g-bad-import-order
 import stl.lib  # pylint: disable=g-bad-import-order
+import stl.levenshtein  # pylint: disable=g-bad-import-order
 
 
 class Message(stl.base.NamedObject):
@@ -164,7 +165,11 @@ class Message(stl.base.NamedObject):
           sub_msg = m[field.type_]
           break
       if not sub_msg:
-        raise NameError('Cannot find a message: ' + field.type_)
+        did_you_mean = stl.levenshtein.closest_candidate(
+            field.type,
+            sum((m.keys() for m in outer_messages + self.messages), []))
+        raise NameError('Cannot find a message: %s. Did you mean %s?' %
+                        (field.type_, did_you_mean))
 
     if not isinstance(value, dict):
       raise ValueError("Struct value expected in field '%s' in message '%s'" %

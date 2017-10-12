@@ -1,0 +1,17 @@
+{
+  'stl_files': [
+    'simple_example.stl',
+  ],
+
+  'roles': [  # Role information
+     { 'role': 'example::rReceiver',
+       'ipAddress': '0.0.0.0',
+     },
+  ],
+
+  'constants': {
+    'example::kHelloWorld': 'Hello, world!',
+  },
+
+  'test': ['example::rReceiver'],
+}

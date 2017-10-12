@@ -111,11 +111,11 @@ event SendResponseCustom(int requestId, string data) =
 // Transitions
 //
 transition tConnectTls(int tlsId) {
-  pre_states = [ sTlsState(tlsId).kNotConnected ]
+  pre_states = []
   events {
     rSender -> Sleep(tlsId) -> rReceiver;
   }
-  post_states = [ sTlsState(tlsId).kConnected ]
+  post_states = []
 }
 
 transition tDisconnectTls(int tlsId) {

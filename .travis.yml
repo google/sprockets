@@ -4,7 +4,8 @@ python:
   - "2.7"
 
 before-install:
-  - sudo apt-get install libgraphviz-dev
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libgraphviz-dev
 
 install:
   - pip install -r requirements.txt
@@ -12,6 +13,7 @@ install:
 script:
   - python -m unittest discover --start-directory stl/ --pattern "*_test.py"
   - python -m unittest discover --start-directory example/ --pattern "*_test.py"
+  - python sprockets_end_to_end_test.py
 
 notification:
   email:

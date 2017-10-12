@@ -1,4 +1,5 @@
 # Requirements for sprockets
+mock == 2.0.0
 protobuf >= 3.0.0
 ply >= 3.8
 networkx >= 1.11

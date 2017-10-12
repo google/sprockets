@@ -16,6 +16,7 @@
 import logging
 
 import stl.base
+import stl.levenshtein
 
 
 class State(stl.base.ParameterizedObject):
@@ -126,10 +127,14 @@ class StateValueInTransition(stl.base.NamedObject):
     # TODO(byungchul): Support names in different modules.
     states = env['_current_module'].states
     if self.name not in states:
-      raise NameError('Cannot find a state to expand: ' + self.name)
+      did_you_mean = stl.levenshtein.closest_candidate(self.name, states.keys())
+      raise NameError('Cannot find a state to expand: %s. Did you mean %s?' %
+                      (self.name, did_you_mean))
     found = states[self.name]
     if len(self.param_values) != len(found.params):
-      raise TypeError('Wrong number of parameters: ' + found.name)
+      raise TypeError('Wrong number of parameters: %s. '
+                      'Found %d params, expected %d params.' %
+                      (found.name, len(found.params), len(self.param_values)))
 
     resolved_state = StateResolved(self.name, found)
     for v in self.param_values:
@@ -137,7 +142,10 @@ class StateValueInTransition(stl.base.NamedObject):
     for v in found.values:
       if self.value == v:
         return StateValue(resolved_state, v)
-    raise NameError("Invalid value in state '%s': %s" % (self.name, self.value))
+
+    did_you_mean = stl.levenshtein.closest_candidate(self.value, found.values)
+    raise NameError('Invalid value in state %s: %s. Did you mean %s?' %
+                    (self.name, self.value, did_you_mean))
 
 
 class Transition(stl.base.ParameterizedObject):
@@ -214,12 +222,18 @@ class Transition(stl.base.ParameterizedObject):
       # TODO(byungchul): Support names in different modules.
       transitions = env['_current_module'].transitions
       if self.expand.name not in transitions:
-        raise NameError('Cannot find a transition to expand: ' +
-                        self.expand.name)
+        did_you_mean = stl.levenshtein.closest_candidate(
+            self.expand.name, transitions.keys())
+        raise NameError('Cannot find a transition to expand: %s.'
+                        ' Did you mean %s?' %
+                        (self.expand.name, did_you_mean))
 
       found = transitions[self.expand.name]
       if len(self.expand.values) != len(found.params):
-        raise TypeError('Wrong number of parameters: ' + found.name)
+        raise TypeError(
+            'Wrong number of parameters: %s.'
+            ' Found %d params, expected %d params.' %
+            (found.name, len(found.params), len(self.expand.values)))
 
       new_resolved_params = {}
       for p, v in zip(found.params, self.expand.values):

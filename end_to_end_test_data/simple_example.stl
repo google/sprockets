@@ -1,0 +1,39 @@
+// This is a very basic module that compiles and runs successfully.
+
+module example;
+
+const string kHelloWorld;
+
+role rSender {
+  string ipAddress;
+}
+
+role rReceiver {
+  string ipAddress;
+}
+
+state sTlsState(int tlsId) {
+  kNotConnected,
+  kConnected,
+}
+
+event Sleep(int tlsId) = external "noop.NoOp";
+
+transition tConnectTls(int tlsId) {
+  pre_states = [ sTlsState(tlsId).kNotConnected ]
+  events {
+    rSender -> Sleep(tlsId) -> rReceiver;
+  }
+  post_states = [ sTlsState(tlsId).kConnected ]
+}
+
+transition tDisconnectTls(int tlsId) {
+  pre_states = [ sTlsState(tlsId).kConnected ]
+  events {
+    rSender -> Sleep(tlsId) -> rReceiver;
+  }
+  post_states = [ sTlsState(tlsId).kNotConnected ]
+}
+
+transition tConnectTlsActual = tConnectTls(1);
+transition tDisconnectTlsActual = tDisconnectTls(1);

@@ -28,6 +28,7 @@ import sys
 import networkx as nx
 
 import stl.graph
+import stl.levenshtein
 import stl.parser
 import stl.traverse
 
@@ -121,9 +122,23 @@ def FillInConstants(modules, manifest):
     return
   for key, val in manifest['constants'].iteritems():
     module, name = key.split('::', 1)
+    if module not in modules:
+      did_you_mean = stl.levenshtein.closest_candidate(module, modules.keys())
+      raise NameError('Cannot find module "%s" referenced by "%s".'
+                      ' Did you mean %s?' % (module, key, did_you_mean))
     if name not in modules[module].consts:
-      raise NameError("Cannot find a constant in module '%s': %s" % (module,
-                                                                     name))
+      did_you_mean = stl.levenshtein.closest_candidate(
+          name, sum((m.consts.keys() for m in modules.itervalues()), []))
+      if did_you_mean in modules[module].consts:
+        raise NameError('Cannot find a constant in module "%s": %s.'
+                        ' Did you mean %s?' % (module, name, did_you_mean))
+      else:
+        did_you_mean_module = next(m_name for m_name, m in modules.iteritems()
+                                   if did_you_mean in m.consts)
+        raise NameError('Cannot find a constant in module "%s": %s.'
+                        ' Did you mean %s::%s?' %
+                        (module, name, did_you_mean_module, did_you_mean))
+
     const = modules[module].consts[name]
     if const.value is not None:
       raise RuntimeError("Const '%s' in module '%s' already has a value: %s" %
@@ -143,7 +158,17 @@ def GetRolesToTest(modules, manifest):
   for r in manifest['test']:
     module, name = r.split('::', 1)
     if name not in modules[module].roles:
-      raise NameError("Cannot find a role in module '%s': %s" % (module, name))
+      did_you_mean = stl.levenshtein.closest_candidate(
+          name, sum((m.roles.keys() for m in modules.itervalues()), []))
+      if did_you_mean in modules[module].roles:
+        raise NameError('Cannot find a role in module "%s": %s.'
+                        ' Did you mean %s?' % (module, name, did_you_mean))
+      else:
+        did_you_mean_module = next(m_name for m_name, m in modules.iteritems()
+                                   if did_you_mean in m.roles)
+        raise NameError('Cannot find a role in module "%s": %s.'
+                        ' Did you mean %s::%s?' %
+                        (module, name, did_you_mean_module, did_you_mean))
     roles_to_test.append(modules[module].roles[name])
   logging.debug(str(roles_to_test))
 
@@ -225,7 +250,7 @@ class Visualizer(object):
 
 
 def TraverseGraph(transitions, states, args=None):
-  """Does that actual graph traversal, going through all transisitons."""
+  """Does that actual graph traversal, going through all transitions."""
   transition_graph, initial_vertex = stl.graph.BuildTransitionGraph(
       transitions, states)
 

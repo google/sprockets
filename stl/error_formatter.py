@@ -126,7 +126,7 @@ class PrettyErrorFormatter(ErrorFormatter):
     """Returns the formatted line from the source that caused the error."""
     return '{}{}'.format(self._GetLineNumberPrefix(error), error.line)
 
-  def _GetSourceAnnotatinoLine(self, error):
+  def _GetSourceAnnotationLine(self, error):
     """Returns a line that highlights the original source."""
     pre_annotation = ' ' * error.position.start
     annotation = '^' * (error.position.end - error.position.start + 1)

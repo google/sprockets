@@ -18,6 +18,7 @@ import logging
 
 import stl.base
 import stl.lib
+import stl.levenshtein
 
 
 class Event(stl.base.ParameterizedObject):
@@ -64,7 +65,9 @@ class Event(stl.base.ParameterizedObject):
     events = env['_current_module'].events
     found = events.get(name)
     if not found:
-      raise NameError('Event {} not found in {}'.format(name, events.keys()))
+      did_you_mean = stl.levenshtein.closest_candidate(name, events.keys())
+      raise NameError('Event not found: %s. Did you mean %s?' %
+                      (name, did_you_mean))
 
     # An external event
     if isinstance(found, EventFromExternal):
