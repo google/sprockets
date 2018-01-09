@@ -70,7 +70,7 @@ def LoadManifest(manifest_filename, manifest_arg_dict):
   """Loads the manifest, replacing any specified manifest args."""
   with open(manifest_filename) as manifest_file:
     manifest = manifest_file.read()
-    for key, value in manifest_arg_dict.iteritems():
+    for key, value in manifest_arg_dict.items():
       logging.debug('Replacing $%s with %s', key, value)
       manifest = manifest.replace('${}'.format(key), value)
 
@@ -120,7 +120,7 @@ def FillInConstants(modules, manifest):
   """Fills in constant information in |modules|."""
   if 'constants' not in manifest:
     return
-  for key, val in manifest['constants'].iteritems():
+  for key, val in manifest['constants'].items():
     module, name = key.split('::', 1)
     if module not in modules:
       did_you_mean = stl.levenshtein.closest_candidate(module, modules.keys())
@@ -128,12 +128,12 @@ def FillInConstants(modules, manifest):
                       ' Did you mean %s?' % (module, key, did_you_mean))
     if name not in modules[module].consts:
       did_you_mean = stl.levenshtein.closest_candidate(
-          name, sum((m.consts.keys() for m in modules.itervalues()), []))
+          name, sum((m.consts.keys() for m in modules.values()), []))
       if did_you_mean in modules[module].consts:
         raise NameError('Cannot find a constant in module "%s": %s.'
                         ' Did you mean %s?' % (module, name, did_you_mean))
       else:
-        did_you_mean_module = next(m_name for m_name, m in modules.iteritems()
+        did_you_mean_module = next(m_name for m_name, m in modules.items()
                                    if did_you_mean in m.consts)
         raise NameError('Cannot find a constant in module "%s": %s.'
                         ' Did you mean %s::%s?' %
@@ -159,12 +159,12 @@ def GetRolesToTest(modules, manifest):
     module, name = r.split('::', 1)
     if name not in modules[module].roles:
       did_you_mean = stl.levenshtein.closest_candidate(
-          name, sum((m.roles.keys() for m in modules.itervalues()), []))
+          name, sum((m.roles.keys() for m in modules.values()), []))
       if did_you_mean in modules[module].roles:
         raise NameError('Cannot find a role in module "%s": %s.'
                         ' Did you mean %s?' % (module, name, did_you_mean))
       else:
-        did_you_mean_module = next(m_name for m_name, m in modules.iteritems()
+        did_you_mean_module = next(m_name for m_name, m in modules.items()
                                    if did_you_mean in m.roles)
         raise NameError('Cannot find a role in module "%s": %s.'
                         ' Did you mean %s::%s?' %
@@ -183,9 +183,9 @@ def ResolveTransitions(modules, roles_to_test):
   env['_modules'] = modules
   env['_roles_to_test'] = roles_to_test
   transitions = {}
-  for m in modules.itervalues():
+  for m in modules.values():
     env['_current_module'] = m
-    for t in m.transitions.itervalues():
+    for t in m.transitions.values():
       if t.params:
         continue
       resolved_t = t.Resolve(env, {})
@@ -203,7 +203,7 @@ def ResolveTransitions(modules, roles_to_test):
 def InitializeStates(transitions):
   """Gathers resolved states with initial values."""
   states = {}
-  for t in transitions.itervalues():
+  for t in transitions.values():
     pre_states = list(itertools.chain(*t.pre_states))
     for i in pre_states + t.post_states + t.error_states:
       key = str(i.state)
@@ -292,7 +292,7 @@ def TraverseGraph(transitions, states, args=None):
       multi_edge = transition_graph[s][t]
       min_weight = float('inf')
       min_edge_i = 0
-      for key, value in multi_edge.iteritems():
+      for key, value in multi_edge.items():
         if value['weight'] < min_weight:
           min_weight = value['weight']
           min_edge_i = key

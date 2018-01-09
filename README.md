@@ -4,7 +4,7 @@
 ## 0. Disclaimer
 
 * This is not an official Google product.
-* This is tested only on Ubuntu though it would be running on any platforms which installed python and depending python packages.
+* This is tested only on Ubuntu though it would be running on any platforms which installed python 3 and depending python packages.
 
 ## 1. Introduction
 Sprockets is a framework for conformance testing based on state transitions.
@@ -26,6 +26,7 @@ To run test_driver.py, extra python packages below are necessary:
 * google.protobuf
 * ply
 * networkx packages
+* websockets
 
 If they are not installed already, follow commands below (tested only on Ubuntu):
 ```
@@ -36,6 +37,7 @@ $ apt-get install libgraphviz-dev
 $ pip install pygraphviz \
      --install-option="--include-path=/usr/include/graphviz" \
      --install-option="--library-path=/usr/lib/graphviz/"
+$ pip install websockets
 ```
 
 ### 2.2. Running

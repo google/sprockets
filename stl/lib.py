@@ -29,11 +29,11 @@ class Encoding(object):
 
   @abc.abstractmethod
   def SerializeToString(self, values, message_type):
-    """Serialize values into a string representation."""
+    """Serializes values into a string representation."""
 
   @abc.abstractmethod
   def ParseFromString(self, encoded, message_type):
-    """Parse string into a dictionary of values."""
+    """Parses string into a dictionary of values."""
 
 
 class JsonEncoding(Encoding):
@@ -143,6 +143,7 @@ class Event(object):
               the target role to direct the event to the appropriate place.
       *args: Additional arguments required for the event. These arguments are
           passed as an event invocation within the STL.
+
     Returns:
       True if the event was fired successfully.
     """
@@ -162,6 +163,7 @@ class Event(object):
               the target role to validate the event recipient.
       *args: Additional arguments for validating the event. These arguments
           should be used to validate the incoming event.
+
     Returns:
       True if the event was successfully validated.
     """

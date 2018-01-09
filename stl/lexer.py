@@ -132,10 +132,10 @@ class StlLexer(object):
 
   # Error handling rule.
   def t_error(self, t):
-    print self._error_handler.GetError(self._filename, t)
+    print(self._error_handler.GetError(self._filename, t))
     raise StlSyntaxError('Error while lexing.')
 
   def debug(data):
     """Print out all the tokens in |data|."""
     for token in self.lexer.tokens():
-      print token
+      print(token)

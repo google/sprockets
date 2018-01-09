@@ -633,8 +633,8 @@ class StlParser(object):
           '[{}] Syntax error: '
           'Reached end of file unexpectantly.'.format(self._filename))
 
-    print self.parser_error_handler.GetError(
-        self._filename, self.parser, self.lexer.lexer)
+    print(self.parser_error_handler.GetError(
+        self._filename, self.parser, self.lexer.lexer))
 
     raise StlSyntaxError('[{}:{}] Syntax error at: {}'.format(
         self._filename, p.lexer.lineno, p.value))

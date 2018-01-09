@@ -31,7 +31,7 @@ class StateVertex(object):
   next_id = 0
 
   def __init__(self, state_list):
-    self.state_list = sorted(state_list, cmp=StateVertex.StateCmp)
+    self.state_list = sorted(state_list, key=str)
     self._edges = []
     self._visited = False
     self.id = 's%d' % StateVertex.GetNextId()
@@ -61,23 +61,12 @@ class StateVertex(object):
     StateVertex.next_id += 1
     return next_id
 
-  @staticmethod
-  def StateCmp(x, y):
-    str_x = str(x)
-    str_y = str(y)
-    if str_x < str_y:
-      return -1
-    elif str_x == str_y:
-      return 0
-    else:
-      return 1
-
   def AppendStateListNotExist(self, state_list):
     """Append state.StateValue's only when they are not already in."""
     for s in state_list:
       if not self._HasAssignedState(s.state):
         self.state_list.append(s)
-    self.state_list.sort(cmp=StateVertex.StateCmp)
+    self.state_list.sort(key=str)
 
   def AddEdge(self, edge):
     self._edges.append(edge)
@@ -168,14 +157,14 @@ def _AddVertex(graph, vertex_list, vertex):
 
 def BuildTransitionGraph(transitions, states):
   """Build a transition graph based on transitions and states."""
-  initial_vertex = StateVertex([s.InitialValue() for s in states.itervalues()])
+  initial_vertex = StateVertex([s.InitialValue() for s in states.values()])
   used_transitions = {}  # To check transitions not used.
 
   graph = {}
   graph[initial_vertex] = initial_vertex
   vertexes = [initial_vertex]
   for v in vertexes:
-    matched_transitions = v.GetMatchingTransitions(transitions.itervalues())
+    matched_transitions = v.GetMatchingTransitions(transitions.values())
     logging.log(3, 'matched transitions for %s: %s', v, matched_transitions)
     for t in matched_transitions:
       trans_key = str(t)
