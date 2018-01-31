@@ -33,6 +33,7 @@ If they are not installed already, follow commands below (tested only on Ubuntu)
 $ pip install protobuf
 $ pip install ply
 $ pip install networkx
+$ apt-get install python3-dev
 $ apt-get install libgraphviz-dev
 $ pip install pygraphviz \
      --install-option="--include-path=/usr/include/graphviz" \

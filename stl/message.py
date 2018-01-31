@@ -236,6 +236,10 @@ class MessageFromExternal(Message):
                              f.label == f.LABEL_REPEATED)
       self.fields.append(field)
 
+  def __deepcopy__(self, memo):
+    return MessageFromExternal(self.name, self.encode_name, self.is_array,
+                               self.descriptor)
+
   @staticmethod
   def _GetFieldType(f):
     """Return type for protobuf field, |f|."""
@@ -343,7 +347,7 @@ class MessageValue(stl.base.NamedObject):
     """
     if isinstance(value, dict):
       resolved_value = {}
-      for k, v in value.iteritems():
+      for k, v in value.items():
         resolved_value[k] = MessageValue._ResolveVars(v)
       return resolved_value
 
@@ -389,7 +393,7 @@ class MessageValue(stl.base.NamedObject):
     if isinstance(expected, dict):
       if not isinstance(actual, dict):
         return False
-      for k, v in expected.iteritems():
+      for k, v in expected.items():
         if k not in actual:
           logging.log(1, 'Not exist: field=' + k)
           return False
