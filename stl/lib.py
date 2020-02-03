@@ -19,6 +19,8 @@ import json
 import logging
 import random
 
+from google.protobuf import message
+
 import stl.message
 
 
@@ -59,7 +61,7 @@ class ProtobufEncoding(Encoding):
     pbuf = message_type.external()
     try:
       read_len = pbuf.MergeFromString(encoded)
-    except stl.message.DecodeError:
+    except message.DecodeError:
       logging.exception('Could not decode protobuf.')
       return False
     assert read_len == len(encoded)
